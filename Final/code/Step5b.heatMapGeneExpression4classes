@@ -1,0 +1,55 @@
+---
+title: "Step7-heatmap4classes"
+author: "Nazanin Zounemat Kermani"
+date: "February 9, 2018"
+output: html_document
+---
+```{r}
+
+# 1- read gene expression data
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+# 2- scale gene expression data(zere mean, one variance)
+dataScaled = scale(data)
+
+# 3- read clinical data
+TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+
+# 3-order the patients' gene expression data in the same way as the clincal data
+inds = match(TAClabels[2,], rownames(data))
+tacLabels <- as.numeric(TAClabels[1,])
+dataScaled = dataScaled[inds,]
+
+# 4- apply clustering 
+library(mclust)
+mbc<-Mclust(dataScaled)
+# 5- read the clustgering labels (TAC1 , TAC2, TAC3a, TAC3b)
+temp  = factor(mbc$classification)
+levels(temp)=c("TAC1", "TAC3a", "TAC2", "TAC3b")
+mbc$classification = temp
+
+
+Label = factor(mbc$classification)
+temp = order(Label)
+dataScaled = dataScaled[temp,]
+Label = Label[temp]
+DesicionfeaturesFor4Classes = read.csv('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/DesicionfeaturesFor4Classes.txt', sep = ' ') 
+Allimportance= rowSums(DesicionfeaturesFor4Classes[,1:4])
+rank =order(Allimportance, decreasing = TRUE)
+
+library(RColorBrewer)
+for (i in seq(1,508,10))
+{
+col <- colorRampPalette(brewer.pal(10,"RdYlBu"))(256)
+print(heatmap(dataScaled[, rank[1:i]], scale = "none", col = col,
+                labRow = '', labCol = '',
+                xlab = 'genes', ylab = 'patients',
+                RowSideColors = rep(c("red", "grey"), ftable(labelTAC3)) ))
+}
+for(i in seq(10,508,10))
+{
+rownames(dataScaled) = Label
+a = cor(t(dataScaled[,1:i]), method = "kendall")
+print(heatmap(a, scale = "none", col = col))
+}
+
+```

@@ -1,0 +1,57 @@
+---
+title: "NumberOfClusters"
+author: "Nazanin Zounemat Kermani"
+date: "January 25, 2018"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",                        header = TRUE))
+dataScaled = scale(data)
+```
+```{r}
+library(factoextra)
+Methods= c("silhouette", "wss","gap_stat")
+Clustering.method = c("kmeans", "hcut","pam")
+pdf("C:/Users/nz1413/Desktop/AnalysisTag/Final/data/numberofClusters.pdf")
+set.seed(123)
+for(emethod in Methods)
+{
+  # for average silhouette width
+fviz_nbclust(dataScaled, FUNcluster = kmeans, nstart=25,  method = emethod,  print.summary = TRUE)+
+  geom_vline(xintercept = 4, linetype = 2)
+}
+
+ hc_method = "complete"
+ 
+for(emethod in Methods)
+{
+  # for average silhouette width
+fviz_nbclust(dataScaled, FUNcluster = hcut, nstart=25,  method = emethod,  print.summary = TRUE)+
+  geom_vline(xintercept = 4, linetype = 2)
+}
+
+for(emethod in Methods)
+{
+  # for average silhouette width
+fviz_nbclust(dataScaled, FUNcluster = cluster::pam,   method = emethod,  print.summary = TRUE)
+}
+dev.off()
+# for average silhouette width
+fviz_nbclust(dataScaled, kmeans, nstart=25,  method = "silhouette")+
+  geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(dataScaled, cluster::pam, method = "silhouette")+
+  geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(dataScaled, hcut, method = "silhouette")+
+  geom_vline(xintercept = 4, linetype = 2)
+
+# for gap statistics
+fviz_nbclust(dataScaled, kmeans,nstart=25, method = "gap_stat")+
+  geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(dataScaled, cluster::pam, method = "gap_stat")+
+  geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(dataScaled, hcut, method = "gap_stat")+
+  geom_vline(xintercept = 4, linetype = 2)
+```

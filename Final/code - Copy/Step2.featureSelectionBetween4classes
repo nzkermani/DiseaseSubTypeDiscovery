@@ -1,0 +1,162 @@
+---
+title: "features"
+author: "Nazanin Zounemat Kermani"
+date: "January 25, 2018"
+output:
+  word_document: default
+  html_document: default
+---
+
+
+
+## finding discriminative features 
+
+The features are going to be selected based on different models. To find the significant features permutation test is applied. 
+
+
+
+```{r}
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",                        header = TRUE))
+dataScaled = scale(data)
+```
+
+
+
+
+```{r}
+library(mclust)
+mbc<-Mclust(dataScaled)
+summary(mbc)
+
+#clusters
+library(CMA)
+set.seed(321) 
+options(warn=-1)
+varsel_ftest <- GeneSelection(X = dataScaled, y=mbc$classification, 
+                              method = "f.test") 
+varsel_kruskaltest <- GeneSelection(X = dataScaled, y=mbc$classification, 
+                                    method = "kruskal.test") 
+varsel_rf <- GeneSelection(X = dataScaled, y=mbc$classification, 
+                           method = "rf") 
+varsel_boosting <- GeneSelection(X = dataScaled, y=mbc$classification, 
+                                 method = "boosting", mstop = 1000) 
+options(warn=0)
+```
+
+```{r}
+library(CMA)
+options(warn=-1)
+set.seed(113)
+numberOfResampling = 1000
+nvars = dim(dataScaled)[2] 
+nSamples = dim(dataScaled)[1] 
+varImportanceftest = matrix(0,numberOfResampling,nvars)
+varImportancekruskaltest = matrix(0,numberOfResampling,nvars)
+varImportancerf = matrix(0,numberOfResampling,nvars)
+varImportanceboosting = matrix(0,numberOfResampling,nvars)
+for(i in 1:numberOfResampling)
+{
+  labels_permutated = sample(mbc$classification)
+  varsel_ftest <- GeneSelection(X = dataScaled, y=labels_permutated, 
+                                method = "f.test") 
+  varsel_kruskaltest <- GeneSelection(X = dataScaled, y=labels_permutated, 
+                                      method = "kruskal.test") 
+  varsel_rf <- GeneSelection(X = dataScaled, labels_permutated, 
+                             mtry= ceiling(10*sqrt(nvars)), nodesize = 8,                          method = "rf") 
+  varsel_boosting <- GeneSelection(X = dataScaled, y=labels_permutated, 
+                                   method = "boosting", mstop = 1000) 
+  varImportanceftest[i,varsel_ftest@rankings[[1]][1:nvars]] = varsel_ftest@importance[[1]][1:nvars]
+  varImportancekruskaltest[i,varsel_kruskaltest@rankings[[1]][1:nvars]] = varsel_kruskaltest@importance[[1]][1:nvars]
+  varImportancerf[i,varsel_rf@rankings[[1]][1:nvars]] = varsel_rf@importance[[1]][1:nvars]
+  varImportanceboosting[i,varsel_boosting@rankings[[1]][1:nvars]] = varsel_boosting@importance[[1]][1:nvars]
+}
+
+set.seed(113)
+options(warn=-1)
+varsel_ftest <- GeneSelection(X = dataScaled, y=mbc$classification, 
+                              method = "f.test") 
+varsel_kruskaltest <- GeneSelection(X = dataScaled, y=mbc$classification, 
+                                    method = "kruskal.test") 
+varsel_rf <- GeneSelection(X = dataScaled, y=mbc$classification, 
+                           mtry= ceiling(10*sqrt(nvars)), nodesize =8 , method = "rf") 
+varsel_boosting <- GeneSelection(X = dataScaled, y=mbc$classification, 
+                                 method = "boosting", mstop = 1000) 
+options(warn=0)
+pValueftest = matrix(0,1,nvars)
+pValuekruskaltest = matrix(0,1,nvars)
+pValuerf = matrix(0,1,nvars)
+pValueboosting = matrix(0,1,nvars)
+for(i in 1:nvars)
+{
+  temp = which(varsel_ftest@rankings[[1]]==i)
+  pValueftest[1,i] = length(which(varImportanceftest[,i]>
+                                    varsel_ftest@importance[[1]][temp]))
+  temp = which(varsel_kruskaltest@rankings[[1]]==i)
+  pValuekruskaltest[1,i] = length(which(varImportancekruskaltest[,i]>
+                                          varsel_kruskaltest@importance[[1]][temp]))
+  temp = which(varsel_rf@rankings[[1]]==i)
+  pValuerf[1,i] = length(which(varImportancerf[,i]>
+                                 varsel_rf@importance[[1]][temp]))
+  temp = which(varsel_boosting@rankings[[1]]==i)
+  pValueboosting[1,i] = length(which(varImportanceboosting[,i]>
+                                       varsel_boosting@importance[[1]][temp]))
+}
+
+ftestPvalue = t(pValueftest)/1000
+kruskalPvalue = t(pValuekruskaltest)/1000
+boostingPvalue = t(pValueboosting)/1000
+rfPvalue = t(pValuerf)/1000
+
+# adjustment
+indeces = order(ftestPvalue)
+ftestPvalue[indeces] = p.adjust(ftestPvalue[indeces], 
+                                  method = "bonferroni")
+indeces = order(kruskalPvalue)
+kruskalPvalue[indeces] = p.adjust(kruskalPvalue[indeces], 
+                                  method = "bonferroni")
+indeces = order(boostingPvalue)
+boostingPvalue[indeces] = p.adjust(boostingPvalue[indeces], 
+                                  method = "bonferroni")
+indeces = order(rfPvalue)
+rfPvalue[indeces] = p.adjust(rfPvalue[indeces], 
+                                  method = "bonferroni")
+
+result = cbind(varsel_ftest@importance[[1]][varsel_ftest@rankings[[1]][1:nvars]],
+               ftestPvalue, 
+               varsel_kruskaltest@importance[[1]][varsel_kruskaltest@rankings[[1]][1:nvars]],
+               kruskalPvalue, 
+               varsel_rf@importance[[1]][varsel_rf@rankings[[1]][1:nvars]],
+               rfPvalue, 
+               varsel_boosting@importance[[1]][varsel_boosting@rankings[[1]][1:nvars]],
+               boostingPvalue)
+
+nvars = dim(dataScaled)[2]
+library(gtools)
+foldChange = 1:nvars
+for (i in 1:nvars)
+{
+  foldChange[i] = foldchange(mean(dataScaled[which(mbc$classification==1 | mbc$classification==2),i]), mean(dataScaled[which(mbc$classification==4 | mbc$classification==3),i]) )
+}
+
+FinalSelection = matrix(0,nvars,4 )
+colnames(FinalSelection) = c("f.test", "kruskal.test", "component boosting","random Forst") 
+rownames(FinalSelection) = colnames(dataScaled) 
+for(i in seq(1,8,2))
+{ 
+  
+  quantTemp = quantile(result[,i], 0.95)
+  FinalSelection[,(floor(i/2)+1)] = as.numeric(c(result[,i]>= quantTemp & result[,(i+1)]<= 0.01))
+}
+
+FinalSelection = cbind(FinalSelection, foldChange)
+rownames(FinalSelection) = colnames(dataScaled)
+
+result = cbind(result, foldChange)
+rownames(result) = colnames(dataScaled)
+
+write.table(result, file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/featuresFor4Classes.txt' )
+
+write.table(FinalSelection, file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/DesicionfeaturesFor4Classes.txt' )
+
+
+```

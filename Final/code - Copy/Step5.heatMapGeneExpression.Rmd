@@ -1,0 +1,65 @@
+---
+title: "plotGeneExpressions"
+author: "Nazanin Zounemat Kermani"
+date: "January 28, 2018"
+output: html_document
+---
+```{r}
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+dataScaled = scale(data)
+
+
+library(mclust)
+mc<-Mclust(dataScaled)
+```
+
+```{r}
+ind34 = which(mc$classification>2)
+dataScaled3ab = dataScaled[ind34,]
+Label = factor(mc$classification[ind34])
+levels(Label) = c("TAC3a","TAC3b")
+temp = order(Label)
+dataScaled3ab = dataScaled3ab[temp,]
+load("test.Rdata")
+Allimportance= rowSums(FoldChangeSelectionresult2classDistinctionBenferoni[,2:14])
+rank =order(Allimportance, decreasing = TRUE)
+
+temp = dataScaled3abs
+rownames(temp)=NULL
+colnames(temp)=NULL
+
+library(RColorBrewer)
+png(filename = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/code/step5Images/classification.png')
+
+col <- colorRampPalette(brewer.pal(10,"RdYlBu"))(256)
+print(heatmap(temp[, rank[1:132]], scale = "none", col = col,
+        labRow = '', labCol = '',
+        xlab = 'genes', ylab = 'patients',
+RowSideColors = rep(c("red", "grey"), ftable(Label)) ))
+dev.off()
+
+ library("d3heatmap")
+ d3heatmap(dataScaled3ab,k_row = 2, k_col = 7)
+d3heatmap(dataScaled,colors = "RdYlBu",k_row = 4, k_col = 5)
+```
+
+```{r}
+
+Label = factor(mc$classification)
+levels(Label) = c("TAC1", "TAC2" ,"TAC3a" , "TAC3b")
+temp = order(Label)
+dataScaled = dataScaled[temp,]
+load("GenesFor4Classes.Rdata")
+Allimportance= rowSums(DesicionfeaturesFor4Classes[,2:5])
+rank =order(Allimportance, decreasing = TRUE)
+
+library(RColorBrewer)
+col <- colorRampPalette(brewer.pal(10,"RdYlBu"))(256)
+print(heatmap(dataScaled[, rank], scale = "none", col = col,
+RowSideColors = rep(c("blue","green", "red", "pink"), ftable(Label))))
+
+a = cor(dataScaled, method = "kendall")
+print(heatmap(a, scale = "none", col = col))
+
+```
+

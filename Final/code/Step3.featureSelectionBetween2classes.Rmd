@@ -1,0 +1,126 @@
+---
+title: "Step2-FeatureSelectionFor2Classes"
+author: "Nazanin Zounemat Kermani"
+date: "January 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+PVALUEFORFEATURES<-function(varselectionActual, matrixPermutated)
+{
+  nvars = dim(matrixPermutated)[2]
+  nPermutations = dim(matrixPermutated)[1]
+  temPvalue = temPvalue = matrix(0,1,nvars)
+  for(i in 1:nvars)
+  {
+    temp = which(varselectionActual@rankings[[1]]==i)
+    temPvalue[1,i] = length(which(matrixPermutated[,i]>
+                                    varselectionActual@importance[[1]][temp]))
+  }
+  return(temPvalue/nPermutations)
+}
+
+
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+dataScaled = scale(data)
+
+TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+inds = match(TAClabels[2,], rownames(data))
+tacLabels <- as.numeric(TAClabels[1,])
+dataScaled = dataScaled[inds,]
+
+library(mclust)
+mbc<-Mclust(dataScaled)
+summary(mbc)
+temp  = factor(mbc$classification)
+#TAC3 classes
+indTAC3 = c(which(mbc$classification==2) ,  which(mbc$classification==4))
+levels(temp)=c("TAC1", "TAC3a", "TAC2", "TAC3b")
+mbc$classification = temp
+
+
+
+
+dataTAC3  =  dataScaled[indTAC3,]
+labelTAC3 =  mbc$classification[indTAC3]
+
+#clusters
+library(CMA)
+set.seed(321) 
+aLLmethods = c("t.test", "welch.test", "wilcox.test", "f.test", "kruskal.test", "limma", "rfe", "rf", "lasso", "elasticnet", "boosting", "golub", "shrinkcat")
+set.seed(113)
+numberOfResampling = 1000
+nvars = dim(dataTAC3)[2] 
+nSamples = dim(labelTAC3)[1] 
+varimportanceAll = matrix(0,nvars, length(aLLmethods))
+pvalueAll = matrix(0,nvars, length(aLLmethods))
+
+for(i in 1:length(aLLmethods)) 
+{ 
+  METHODS = aLLmethods[i]
+  tempMatrix = matrix(0, numberOfResampling,nvars)
+  set.seed(123)
+  for(j in 1:numberOfResampling)
+  {
+    labels_permutated = sample(labelTAC3)
+    temp <- GeneSelection(X = dataTAC3, y=labels_permutated, 
+                          method = METHODS) 
+    tempMatrix[j,temp@rankings[[1]][1:nvars]] = temp@importance[[1]][1:nvars]
+  }
+  temp <- GeneSelection(X = dataTAC3, y=labelTAC3, 
+                        method = METHODS)
+  pvalueAll[,i] = PVALUEFORFEATURES(temp,tempMatrix)
+  varimportanceAll[,i] = temp@importance[[1]][temp@rankings[[1]][1:nvars]]
+  rm(tempMatrix)
+  rm(temp)
+}
+
+FinalResult = matrix(0, nvars, 26)
+FinalResult[,seq(1,26,2)] = varimportanceAll
+FinalResult[,seq(2,26,2)] = pvalueAll
+save(FinalResult,file = 'C:/Users/nz1413/Desktop/AnalysisTag/code/result2classDistinction.Rdata')
+
+rownames(FinalResult) = colnames(dataTAC3)
+colnames(FinalResult)=c("t.test","pvalue", "welch.test", "pvalue","wilcox.test", "pvalue",
+                        "f.test", "pvalue", "kruskal.test", "pvalue", "limma", 
+                        "pvalue","rfe", "pvalue","rf", "pvalue","lasso","pvalue",
+                        "elasticnet", "pvalue","boosting","pvalue", 
+                        "golub", "pvalue","shrinkcat","pvalue")
+
+write.csv(file = 'C:/Users/nz1413/Desktop/AnalysisTag/code/result2classDistinction.txt'
+          , FinalResult)
+
+library(FSA)
+for(i in seq(2,26,2))
+{
+  indeces = order(FinalResult[,i])
+  FinalResult[indeces,i] = p.adjust(FinalResult[indeces,i], 
+                             method = "bonferroni")
+}
+write.csv(file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/result2classDistinctionBenferoni.txt'
+          , FinalResult)
+
+
+# select important ones quantile
+
+FinalSelection = matrix(0,length(aLLmethods), nvars)
+colnames(FinalSelection) = colnames(dataTAC3)
+rownames(FinalSelection) = aLLmethods 
+for(i in seq(1,26,2))
+{ 
+  
+  quantTemp = quantile(FinalResult[,i], 0.95)
+  FinalSelection[(floor(i/2)+1),] = as.numeric(c(FinalResult[,i]>= quantTemp & FinalResult[,(i+1)]<= 0.01))
+}
+library(gtools)
+foldChange = 1:nvars
+for (i in 1:nvars)
+{
+  foldChange[i] = foldchange(dataTAC3[which(labelTAC3==3),i],
+                             dataTAC3[which(labelTAC3==4),i] )
+}
+finalResultSelectionAndFoldChange = cbind(t(FinalSelection), foldChange)
+write.csv(file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/FoldChangeSelectionresult2classDistinctionBenferoni.txt'
+          , finalResultSelectionAndFoldChange)
+```

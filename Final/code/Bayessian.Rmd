@@ -1,0 +1,26 @@
+---
+title: "regression"
+author: "Nazanin Zounemat Kermani"
+date: "February 7, 2018"
+output: html_document
+---
+
+```{r}
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData<-readImputateClinicalData()
+
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp<-CleanData(clinicalData)
+indStay = which(dataTemp$Label>2)
+dataTemp = dataTemp[indStay,]
+dataTemp$Label = dataTemp$Label -3
+for(i in 1:(dim(dataTemp)[2]-1))
+{ print('--------------------')
+  print(summary(glm(Label~dataTemp[,i], data = dataTemp))) 
+  print(colnames(dataTemp)[i])
+  temp <- glm(Label~dataTemp[,i], data = dataTemp)
+  print(exp(cbind(coef(temp), confint(temp))) )
+  print('-----------------------------------------')
+}
+```

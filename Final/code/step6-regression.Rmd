@@ -1,0 +1,86 @@
+---
+title: "step6-regression"
+author: "Nazanin Zounemat Kermani"
+date: "February 2, 2018"
+output: html_document
+---
+Between Four Classes
+```{r}
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData<-readImputateClinicalData()
+
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp<-CleanData(clinicalData)
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/checkCollinearity.R')
+temp = rep(1,length(dataTemp$Label))
+temp[which(dataTemp$Label == 'TAC1')] = 1
+temp[which(dataTemp$Label == 'TAC2')] = 2
+temp[which(dataTemp$Label == 'TAC3a')] = 3
+temp[which(dataTemp$Label == 'TAC3b')] = 4
+dataTemp$Label = as.numeric(dataTemp$Label)
+dataTemp$Label = temp
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)
+# retrieve confidence intervals
+confIntervals = exp(confint(fitted_model))
+
+backward_model = step(fitted_model,  direction="backward", trace=1)
+
+significant_cov = dataTemp[, colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)
+confIntervals = exp(confint(fitted_model_best,level = 0.95))
+
+
+```
+between 3 classes
+
+```{r}
+preserveLabels = dataTemp$Label
+dataTemp$Label[which(dataTemp$Label>2)]=3
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)
+# retrieve confidence intervals
+confIntervals = exp(confint(fitted_model,level = 0.95))
+
+backward_model = step(fitted_model,  direction="backward", trace=1)
+
+significant_cov = dataTemp[, colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)
+confIntervals = exp(confint(fitted_model_best,level = 0.95))
+
+```
+
+between tac3a and tac3b classes
+
+```{r}
+dataTemp$Label = preserveLabels
+indStay = which(dataTemp$Label>2)
+dataTemp = dataTemp[indStay,]
+
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)
+# retrieve confidence intervals
+confIntervals = exp(confint(fitted_model))
+
+backward_model = step(fitted_model,  direction="backward", trace=1)
+
+significant_cov = dataTemp[,  colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)
+confIntervals = exp(confint(fitted_model_best, level = 0.95))
+
+```
+
+```{r}
+for(i in 1:(dim(dataTemp)[2]-1))
+{
+  print(summary(glm(Label~dataTemp[,i], data = dataTemp))) 
+  print(colnames(dataTemp)[i])
+  temp <- glm(Label~dataTemp[,i], data = dataTemp)
+  print(exp(confint(temp)))
+  print('-----------------------------------------')
+}
+```

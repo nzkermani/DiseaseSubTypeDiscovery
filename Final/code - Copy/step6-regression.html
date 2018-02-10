@@ -1,0 +1,2729 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Nazanin Zounemat Kermani" />
+
+
+<title>step6-regression</title>
+
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fjquery%2D1%2E11%2E3%2Fjquery%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fcss%2Fbootstrap%2Emin%2Ecss%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A" rel="stylesheet" />
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fjs%2Fbootstrap%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fshim%2Fhtml5shiv%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fshim%2Frespond%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fnavigation%2D1%2E1%2Ftabsets%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<link href="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fhighlightjs%2Fdefault%2Ecss%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A" rel="stylesheet" />
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fhighlightjs%2Fhighlight%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type="text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">step6-regression</h1>
+<h4 class="author"><em>Nazanin Zounemat Kermani</em></h4>
+<h4 class="date"><em>February 2, 2018</em></h4>
+
+</div>
+
+
+<p>Between Four Classes</p>
+<pre class="r"><code>source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData&lt;-readImputateClinicalData()</code></pre>
+<pre><code>## Package 'mclust' version 5.4
+## Type 'citation(&quot;mclust&quot;)' for citing this R package in publications.</code></pre>
+<pre><code>## Loading required package: randomForest</code></pre>
+<pre><code>## randomForest 4.6-12</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## Loading required package: foreach</code></pre>
+<pre><code>## Loading required package: itertools</code></pre>
+<pre><code>## Loading required package: iterators</code></pre>
+<pre><code>##   missForest iteration 1 in progress...done!
+##     estimated error(s): 0.9580083 
+##     difference(s): 0.001627469 
+##     time: 17.49 seconds
+## 
+##   missForest iteration 2 in progress...done!
+##     estimated error(s): 0.9623182 
+##     difference(s): 1.842304e-05 
+##     time: 16.93 seconds
+## 
+##   missForest iteration 3 in progress...done!
+##     estimated error(s): 0.9613949 
+##     difference(s): 5.05435e-06 
+##     time: 16.88 seconds
+## 
+##   missForest iteration 4 in progress...done!
+##     estimated error(s): 0.9612467 
+##     difference(s): 1.526992e-05 
+##     time: 16.91 seconds</code></pre>
+<pre class="r"><code>source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp&lt;-CleanData(clinicalData)
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/checkCollinearity.R')
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Label ~ ., data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -1.70866  -0.46568   0.02798   0.54251   1.39439  
+## 
+## Coefficients:
+##                             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)               -1.1218247  4.5386639  -0.247   0.8054  
+## Sex1                      -0.0466018  0.1685020  -0.277   0.7829  
+## Age                        0.0027019  0.0071570   0.378   0.7068  
+## Body_Mass_Index_.kg.m2.   -0.0040047  0.0178647  -0.224   0.8232  
+## IgE_Total_.IU.ml.         -0.0001932  0.0001583  -1.221   0.2260  
+## eosi0phils_.x10.3.uL.     -0.2021633  0.3608271  -0.560   0.5769  
+## neutrophils_.x10.3.uL.    -0.0541957  0.1003990  -0.540   0.5909  
+## Periostin_.ng.mL.          0.0008710  0.0061325   0.142   0.8874  
+## Pct_Eosi0phils             0.0057166  0.0446506   0.128   0.8985  
+## Pct_Neutrophils            0.0085382  0.0444361   0.192   0.8481  
+## Pct_Macrophages            0.0435139  0.0446521   0.975   0.3329  
+## Pct_Lymphocytes            0.1164339  0.0834577   1.395   0.1670  
+## Pct_Mast_cells            -0.4660887  1.0659168  -0.437   0.6631  
+## Fe0                        0.0006717  0.0023959   0.280   0.7800  
+## Eczema_Diag0sed1          -0.3306357  0.1821131  -1.816   0.0733 .
+## Allergic_Rhinitis1        -0.0994530  0.1764733  -0.564   0.5747  
+## Atopy1                     0.1401753  0.1827286   0.767   0.4454  
+## Sinusitis_Diag0sed1       -0.1724020  0.2053858  -0.839   0.4038  
+## Nasal_Polyps_Diag0sed1     0.0308816  0.1936768   0.159   0.8737  
+## oral_corticosteroids1      0.0396547  0.1917075   0.207   0.8367  
+## AE                         0.0521226  0.0413520   1.260   0.2113  
+## wbc                        0.0349052  0.0948448   0.368   0.7139  
+## FEV1_Pct_.L.              -0.0230973  0.0188612  -1.225   0.2245  
+## FEV1_Change                0.0046227  0.0058432   0.791   0.4313  
+## FVC_Pct_.L.                0.0218832  0.0137291   1.594   0.1150  
+## FEV1.FVC_PreSalbutamol     0.0198570  0.0200388   0.991   0.3248  
+## C_Reactive_Protein_.mg.L.  0.0024854  0.0080524   0.309   0.7584  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.5438845)
+## 
+##     Null deviance: 131.038  on 103  degrees of freedom
+## Residual deviance:  41.879  on  77  degrees of freedom
+## AIC: 256.54
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+<pre class="r"><code># retrieve confidence intervals
+confIntervals = exp(confint(fitted_model))</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre class="r"><code>backward_model = step(fitted_model,  direction=&quot;backward&quot;, trace=1)</code></pre>
+<pre><code>## Start:  AIC=256.54
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Pct_Mast_cells + Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + Sinusitis_Diag0sed + Nasal_Polyps_Diag0sed + oral_corticosteroids + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Pct_Eosi0phils             1   41.888 254.56
+## - Periostin_.ng.mL.          1   41.890 254.57
+## - Nasal_Polyps_Diag0sed      1   41.893 254.57
+## - Pct_Neutrophils            1   41.899 254.59
+## - oral_corticosteroids       1   41.902 254.60
+## - Body_Mass_Index_.kg.m2.    1   41.906 254.61
+## - Sex                        1   41.921 254.64
+## - Fe0                        1   41.922 254.65
+## - C_Reactive_Protein_.mg.L.  1   41.931 254.67
+## - wbc                        1   41.953 254.72
+## - Age                        1   41.957 254.73
+## - Pct_Mast_cells             1   41.983 254.80
+## - neutrophils_.x10.3.uL.     1   42.038 254.93
+## - eosi0phils_.x10.3.uL.      1   42.050 254.96
+## - Allergic_Rhinitis          1   42.052 254.97
+## - Atopy                      1   42.199 255.33
+## - FEV1_Change                1   42.220 255.38
+## - Sinusitis_Diag0sed         1   42.262 255.49
+## - Pct_Macrophages            1   42.396 255.81
+## - FEV1.FVC_PreSalbutamol     1   42.413 255.86
+## - IgE_Total_.IU.ml.          1   42.689 256.53
+## &lt;none&gt;                           41.879 256.54
+## - FEV1_Pct_.L.               1   42.695 256.55
+## - AE                         1   42.743 256.66
+## - Pct_Lymphocytes            1   42.938 257.14
+## - FVC_Pct_.L.                1   43.261 257.92
+## - Eczema_Diag0sed            1   43.672 258.90
+## 
+## Step:  AIC=254.56
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + 
+##     Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     Nasal_Polyps_Diag0sed + oral_corticosteroids + AE + wbc + 
+##     FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Periostin_.ng.mL.          1   41.898 252.59
+## - Nasal_Polyps_Diag0sed      1   41.904 252.60
+## - oral_corticosteroids       1   41.909 252.61
+## - Body_Mass_Index_.kg.m2.    1   41.911 252.62
+## - Sex                        1   41.934 252.68
+## - Fe0                        1   41.935 252.68
+## - C_Reactive_Protein_.mg.L.  1   41.937 252.68
+## - wbc                        1   41.957 252.73
+## - Age                        1   41.974 252.78
+## - Pct_Mast_cells             1   41.999 252.84
+## - neutrophils_.x10.3.uL.     1   42.040 252.94
+## - Allergic_Rhinitis          1   42.053 252.97
+## - eosi0phils_.x10.3.uL.      1   42.063 253.00
+## - Pct_Neutrophils            1   42.068 253.01
+## - Atopy                      1   42.216 253.37
+## - FEV1_Change                1   42.222 253.39
+## - Sinusitis_Diag0sed         1   42.262 253.49
+## - FEV1.FVC_PreSalbutamol     1   42.439 253.92
+## &lt;none&gt;                           41.888 254.56
+## - IgE_Total_.IU.ml.          1   42.707 254.58
+## - FEV1_Pct_.L.               1   42.727 254.62
+## - AE                         1   42.747 254.67
+## - Pct_Lymphocytes            1   43.167 255.69
+## - FVC_Pct_.L.                1   43.287 255.98
+## - Eczema_Diag0sed            1   43.721 257.02
+## - Pct_Macrophages            1   61.110 291.84
+## 
+## Step:  AIC=252.59
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Pct_Neutrophils + 
+##     Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + Fe0 + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     Nasal_Polyps_Diag0sed + oral_corticosteroids + AE + wbc + 
+##     FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - oral_corticosteroids       1   41.917 250.63
+## - Nasal_Polyps_Diag0sed      1   41.919 250.64
+## - Body_Mass_Index_.kg.m2.    1   41.923 250.65
+## - Sex                        1   41.938 250.69
+## - Fe0                        1   41.942 250.70
+## - C_Reactive_Protein_.mg.L.  1   41.947 250.71
+## - wbc                        1   41.966 250.76
+## - Pct_Mast_cells             1   42.002 250.84
+## - Age                        1   42.006 250.85
+## - neutrophils_.x10.3.uL.     1   42.048 250.96
+## - eosi0phils_.x10.3.uL.      1   42.063 251.00
+## - Allergic_Rhinitis          1   42.064 251.00
+## - Pct_Neutrophils            1   42.070 251.01
+## - FEV1_Change                1   42.224 251.39
+## - Atopy                      1   42.229 251.41
+## - Sinusitis_Diag0sed         1   42.312 251.61
+## - FEV1.FVC_PreSalbutamol     1   42.445 251.94
+## - IgE_Total_.IU.ml.          1   42.709 252.58
+## &lt;none&gt;                           41.898 252.59
+## - FEV1_Pct_.L.               1   42.741 252.66
+## - AE                         1   42.750 252.68
+## - Pct_Lymphocytes            1   43.167 253.69
+## - FVC_Pct_.L.                1   43.312 254.04
+## - Eczema_Diag0sed            1   43.727 255.03
+## - Pct_Macrophages            1   63.322 293.54
+## 
+## Step:  AIC=250.64
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Pct_Neutrophils + 
+##     Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + Fe0 + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     Nasal_Polyps_Diag0sed + AE + wbc + FEV1_Pct_.L. + FEV1_Change + 
+##     FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Body_Mass_Index_.kg.m2.    1   41.934 248.68
+## - Nasal_Polyps_Diag0sed      1   41.948 248.71
+## - Sex                        1   41.957 248.73
+## - C_Reactive_Protein_.mg.L.  1   41.962 248.75
+## - Fe0                        1   41.968 248.76
+## - wbc                        1   41.990 248.82
+## - Pct_Mast_cells             1   42.019 248.89
+## - Age                        1   42.028 248.91
+## - neutrophils_.x10.3.uL.     1   42.060 248.99
+## - Pct_Neutrophils            1   42.075 249.03
+## - Allergic_Rhinitis          1   42.086 249.05
+## - eosi0phils_.x10.3.uL.      1   42.093 249.07
+## - FEV1_Change                1   42.238 249.43
+## - Atopy                      1   42.241 249.43
+## - Sinusitis_Diag0sed         1   42.359 249.73
+## - FEV1.FVC_PreSalbutamol     1   42.462 249.98
+## &lt;none&gt;                           41.917 250.63
+## - IgE_Total_.IU.ml.          1   42.745 250.67
+## - FEV1_Pct_.L.               1   42.760 250.71
+## - AE                         1   42.792 250.78
+## - Pct_Lymphocytes            1   43.243 251.87
+## - FVC_Pct_.L.                1   43.337 252.10
+## - Eczema_Diag0sed            1   43.779 253.16
+## - Pct_Macrophages            1   64.381 293.26
+## 
+## Step:  AIC=248.68
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + 
+##     neutrophils_.x10.3.uL. + Pct_Neutrophils + Pct_Macrophages + 
+##     Pct_Lymphocytes + Pct_Mast_cells + Fe0 + Eczema_Diag0sed + 
+##     Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + Nasal_Polyps_Diag0sed + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Nasal_Polyps_Diag0sed      1   41.968 246.76
+## - Sex                        1   41.968 246.76
+## - C_Reactive_Protein_.mg.L.  1   41.982 246.80
+## - Fe0                        1   41.992 246.82
+## - wbc                        1   41.997 246.83
+## - Pct_Mast_cells             1   42.034 246.92
+## - Age                        1   42.041 246.94
+## - neutrophils_.x10.3.uL.     1   42.066 247.00
+## - Pct_Neutrophils            1   42.078 247.03
+## - Allergic_Rhinitis          1   42.088 247.06
+## - eosi0phils_.x10.3.uL.      1   42.104 247.10
+## - FEV1_Change                1   42.245 247.44
+## - Atopy                      1   42.249 247.46
+## - Sinusitis_Diag0sed         1   42.436 247.91
+## - FEV1.FVC_PreSalbutamol     1   42.462 247.98
+## &lt;none&gt;                           41.934 248.68
+## - FEV1_Pct_.L.               1   42.761 248.71
+## - IgE_Total_.IU.ml.          1   42.805 248.81
+## - AE                         1   42.813 248.83
+## - Pct_Lymphocytes            1   43.331 250.09
+## - FVC_Pct_.L.                1   43.345 250.12
+## - Eczema_Diag0sed            1   43.808 251.22
+## - Pct_Macrophages            1   65.310 292.75
+## 
+## Step:  AIC=246.76
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + 
+##     neutrophils_.x10.3.uL. + Pct_Neutrophils + Pct_Macrophages + 
+##     Pct_Lymphocytes + Pct_Mast_cells + Fe0 + Eczema_Diag0sed + 
+##     Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + AE + wbc + 
+##     FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Sex                        1   42.012 244.87
+## - C_Reactive_Protein_.mg.L.  1   42.016 244.88
+## - wbc                        1   42.018 244.88
+## - Fe0                        1   42.057 244.98
+## - Pct_Mast_cells             1   42.077 245.03
+## - neutrophils_.x10.3.uL.     1   42.079 245.03
+## - Age                        1   42.097 245.08
+## - Pct_Neutrophils            1   42.122 245.14
+## - Allergic_Rhinitis          1   42.124 245.15
+## - eosi0phils_.x10.3.uL.      1   42.129 245.16
+## - FEV1_Change                1   42.263 245.49
+## - Atopy                      1   42.277 245.52
+## - Sinusitis_Diag0sed         1   42.438 245.92
+## - FEV1.FVC_PreSalbutamol     1   42.559 246.22
+## &lt;none&gt;                           41.968 246.76
+## - IgE_Total_.IU.ml.          1   42.838 246.90
+## - FEV1_Pct_.L.               1   42.880 247.00
+## - AE                         1   42.936 247.13
+## - Pct_Lymphocytes            1   43.344 248.12
+## - FVC_Pct_.L.                1   43.476 248.43
+## - Eczema_Diag0sed            1   43.931 249.52
+## - Pct_Macrophages            1   65.401 290.90
+## 
+## Step:  AIC=244.87
+## Label ~ Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + 
+##     Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - C_Reactive_Protein_.mg.L.  1   42.048 242.96
+## - wbc                        1   42.067 243.01
+## - Pct_Mast_cells             1   42.115 243.12
+## - Fe0                        1   42.117 243.13
+## - Age                        1   42.124 243.15
+## - neutrophils_.x10.3.uL.     1   42.125 243.15
+## - Pct_Neutrophils            1   42.168 243.25
+## - Allergic_Rhinitis          1   42.178 243.28
+## - eosi0phils_.x10.3.uL.      1   42.180 243.29
+## - FEV1_Change                1   42.281 243.53
+## - Atopy                      1   42.339 243.68
+## - Sinusitis_Diag0sed         1   42.493 244.05
+## - FEV1.FVC_PreSalbutamol     1   42.563 244.22
+## &lt;none&gt;                           42.012 244.87
+## - FEV1_Pct_.L.               1   42.888 245.01
+## - IgE_Total_.IU.ml.          1   42.920 245.09
+## - AE                         1   42.958 245.19
+## - Pct_Lymphocytes            1   43.402 246.25
+## - FVC_Pct_.L.                1   43.494 246.48
+## - Eczema_Diag0sed            1   43.966 247.60
+## - Pct_Macrophages            1   65.550 289.14
+## 
+## Step:  AIC=242.96
+## Label ~ Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + 
+##     Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - wbc                     1   42.109 241.11
+## - Age                     1   42.144 241.19
+## - neutrophils_.x10.3.uL.  1   42.157 241.23
+## - Pct_Mast_cells          1   42.161 241.24
+## - Fe0                     1   42.178 241.28
+## - Allergic_Rhinitis       1   42.199 241.33
+## - eosi0phils_.x10.3.uL.   1   42.212 241.36
+## - Pct_Neutrophils         1   42.215 241.37
+## - FEV1_Change             1   42.293 241.56
+## - Atopy                   1   42.406 241.84
+## - Sinusitis_Diag0sed      1   42.512 242.10
+## - FEV1.FVC_PreSalbutamol  1   42.568 242.24
+## &lt;none&gt;                        42.048 242.96
+## - FEV1_Pct_.L.            1   42.888 243.02
+## - IgE_Total_.IU.ml.       1   42.990 243.26
+## - AE                      1   43.075 243.47
+## - Pct_Lymphocytes         1   43.425 244.31
+## - FVC_Pct_.L.             1   43.543 244.59
+## - Eczema_Diag0sed         1   44.040 245.77
+## - Pct_Macrophages         1   65.564 287.16
+## 
+## Step:  AIC=241.11
+## Label ~ Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + 
+##     Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     AE + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - neutrophils_.x10.3.uL.  1   42.177 239.28
+## - eosi0phils_.x10.3.uL.   1   42.213 239.37
+## - Age                     1   42.221 239.39
+## - Fe0                     1   42.226 239.40
+## - Pct_Mast_cells          1   42.244 239.44
+## - Allergic_Rhinitis       1   42.277 239.52
+## - Pct_Neutrophils         1   42.292 239.56
+## - FEV1_Change             1   42.348 239.70
+## - Atopy                   1   42.441 239.93
+## - Sinusitis_Diag0sed      1   42.543 240.18
+## - FEV1.FVC_PreSalbutamol  1   42.752 240.69
+## &lt;none&gt;                        42.109 241.11
+## - IgE_Total_.IU.ml.       1   43.072 241.46
+## - FEV1_Pct_.L.            1   43.127 241.59
+## - AE                      1   43.183 241.73
+## - Pct_Lymphocytes         1   43.444 242.36
+## - FVC_Pct_.L.             1   43.811 243.23
+## - Eczema_Diag0sed         1   44.112 243.94
+## - Pct_Macrophages         1   66.533 286.68
+## 
+## Step:  AIC=239.28
+## Label ~ Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + Pct_Neutrophils + 
+##     Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + Fe0 + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     AE + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Age                     1   42.288 237.55
+## - Pct_Mast_cells          1   42.300 237.58
+## - Fe0                     1   42.304 237.59
+## - eosi0phils_.x10.3.uL.   1   42.305 237.59
+## - Pct_Neutrophils         1   42.372 237.76
+## - Allergic_Rhinitis       1   42.385 237.79
+## - FEV1_Change             1   42.439 237.92
+## - Atopy                   1   42.554 238.20
+## - Sinusitis_Diag0sed      1   42.657 238.45
+## - FEV1.FVC_PreSalbutamol  1   42.807 238.82
+## &lt;none&gt;                        42.177 239.28
+## - FEV1_Pct_.L.            1   43.137 239.62
+## - IgE_Total_.IU.ml.       1   43.163 239.68
+## - AE                      1   43.218 239.81
+## - Pct_Lymphocytes         1   43.711 240.99
+## - FVC_Pct_.L.             1   43.811 241.23
+## - Eczema_Diag0sed         1   44.255 242.28
+## - Pct_Macrophages         1   67.186 285.70
+## 
+## Step:  AIC=237.55
+## Label ~ IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + Pct_Neutrophils + 
+##     Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + Fe0 + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     AE + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Fe0                     1   42.384 235.79
+## - eosi0phils_.x10.3.uL.   1   42.407 235.84
+## - Pct_Mast_cells          1   42.416 235.87
+## - Pct_Neutrophils         1   42.473 236.00
+## - Allergic_Rhinitis       1   42.525 236.13
+## - FEV1_Change             1   42.553 236.20
+## - Atopy                   1   42.594 236.30
+## - Sinusitis_Diag0sed      1   42.711 236.59
+## - FEV1.FVC_PreSalbutamol  1   42.821 236.85
+## &lt;none&gt;                        42.288 237.55
+## - FEV1_Pct_.L.            1   43.156 237.66
+## - IgE_Total_.IU.ml.       1   43.274 237.95
+## - AE                      1   43.387 238.22
+## - Pct_Lymphocytes         1   43.802 239.21
+## - FVC_Pct_.L.             1   43.813 239.24
+## - Eczema_Diag0sed         1   44.611 241.11
+## - Pct_Macrophages         1   67.199 283.72
+## 
+## Step:  AIC=235.79
+## Label ~ IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + Pct_Neutrophils + 
+##     Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + Eczema_Diag0sed + 
+##     Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + AE + FEV1_Pct_.L. + 
+##     FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - eosi0phils_.x10.3.uL.   1   42.475 234.01
+## - Pct_Mast_cells          1   42.502 234.07
+## - Pct_Neutrophils         1   42.526 234.13
+## - FEV1_Change             1   42.670 234.49
+## - Atopy                   1   42.676 234.50
+## - Allergic_Rhinitis       1   42.681 234.51
+## - Sinusitis_Diag0sed      1   42.789 234.78
+## - FEV1.FVC_PreSalbutamol  1   42.901 235.05
+## &lt;none&gt;                        42.384 235.79
+## - FEV1_Pct_.L.            1   43.240 235.87
+## - IgE_Total_.IU.ml.       1   43.404 236.26
+## - AE                      1   43.423 236.31
+## - Pct_Lymphocytes         1   43.855 237.34
+## - FVC_Pct_.L.             1   43.931 237.51
+## - Eczema_Diag0sed         1   44.665 239.24
+## - Pct_Macrophages         1   67.293 281.86
+## 
+## Step:  AIC=234.01
+## Label ~ IgE_Total_.IU.ml. + Pct_Neutrophils + Pct_Macrophages + 
+##     Pct_Lymphocytes + Pct_Mast_cells + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + Sinusitis_Diag0sed + AE + FEV1_Pct_.L. + FEV1_Change + 
+##     FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Pct_Mast_cells          1   42.602 232.32
+## - Pct_Neutrophils         1   42.650 232.44
+## - FEV1_Change             1   42.746 232.67
+## - Atopy                   1   42.786 232.77
+## - Allergic_Rhinitis       1   42.834 232.88
+## - Sinusitis_Diag0sed      1   42.936 233.13
+## - FEV1.FVC_PreSalbutamol  1   43.018 233.33
+## &lt;none&gt;                        42.475 234.01
+## - FEV1_Pct_.L.            1   43.328 234.08
+## - AE                      1   43.552 234.61
+## - IgE_Total_.IU.ml.       1   43.631 234.80
+## - Pct_Lymphocytes         1   43.947 235.55
+## - FVC_Pct_.L.             1   44.031 235.75
+## - Eczema_Diag0sed         1   44.668 237.25
+## - Pct_Macrophages         1   67.864 280.74
+## 
+## Step:  AIC=232.32
+## Label ~ IgE_Total_.IU.ml. + Pct_Neutrophils + Pct_Macrophages + 
+##     Pct_Lymphocytes + Eczema_Diag0sed + Allergic_Rhinitis + Atopy + 
+##     Sinusitis_Diag0sed + AE + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + 
+##     FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Pct_Neutrophils         1   42.752 230.69
+## - Atopy                   1   42.896 231.04
+## - Allergic_Rhinitis       1   42.914 231.08
+## - FEV1_Change             1   42.937 231.13
+## - Sinusitis_Diag0sed      1   43.068 231.45
+## - FEV1.FVC_PreSalbutamol  1   43.209 231.79
+## &lt;none&gt;                        42.602 232.32
+## - FEV1_Pct_.L.            1   43.576 232.67
+## - AE                      1   43.649 232.84
+## - IgE_Total_.IU.ml.       1   43.897 233.43
+## - Pct_Lymphocytes         1   43.955 233.57
+## - FVC_Pct_.L.             1   44.438 234.71
+## - Eczema_Diag0sed         1   44.963 235.93
+## - Pct_Macrophages         1   67.939 278.86
+## 
+## Step:  AIC=230.69
+## Label ~ IgE_Total_.IU.ml. + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     AE + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Allergic_Rhinitis       1   43.013 229.32
+## - Atopy                   1   43.048 229.40
+## - FEV1_Change             1   43.059 229.43
+## - Sinusitis_Diag0sed      1   43.275 229.95
+## - FEV1.FVC_PreSalbutamol  1   43.297 230.00
+## &lt;none&gt;                        42.752 230.69
+## - FEV1_Pct_.L.            1   43.611 230.75
+## - AE                      1   43.725 231.03
+## - IgE_Total_.IU.ml.       1   44.033 231.75
+## - Pct_Lymphocytes         1   44.061 231.82
+## - FVC_Pct_.L.             1   44.449 232.73
+## - Eczema_Diag0sed         1   45.007 234.03
+## - Pct_Macrophages         1   88.672 304.56
+## 
+## Step:  AIC=229.32
+## Label ~ IgE_Total_.IU.ml. + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Atopy + Sinusitis_Diag0sed + AE + FEV1_Pct_.L. + 
+##     FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Atopy                   1   43.200 227.77
+## - FEV1_Change             1   43.465 228.41
+## - Sinusitis_Diag0sed      1   43.538 228.58
+## - FEV1.FVC_PreSalbutamol  1   43.649 228.85
+## &lt;none&gt;                        43.013 229.32
+## - FEV1_Pct_.L.            1   43.980 229.63
+## - AE                      1   44.086 229.88
+## - IgE_Total_.IU.ml.       1   44.197 230.14
+## - Pct_Lymphocytes         1   44.383 230.58
+## - FVC_Pct_.L.             1   44.812 231.58
+## - Eczema_Diag0sed         1   45.269 232.64
+## - Pct_Macrophages         1   89.033 302.98
+## 
+## Step:  AIC=227.77
+## Label ~ IgE_Total_.IU.ml. + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Sinusitis_Diag0sed + AE + FEV1_Pct_.L. + 
+##     FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - FEV1_Change             1   43.681 226.92
+## - Sinusitis_Diag0sed      1   43.811 227.23
+## - FEV1.FVC_PreSalbutamol  1   43.844 227.31
+## &lt;none&gt;                        43.200 227.77
+## - AE                      1   44.152 228.04
+## - FEV1_Pct_.L.            1   44.178 228.10
+## - IgE_Total_.IU.ml.       1   44.263 228.30
+## - Pct_Lymphocytes         1   44.517 228.89
+## - FVC_Pct_.L.             1   45.002 230.02
+## - Eczema_Diag0sed         1   45.389 230.91
+## - Pct_Macrophages         1   90.752 302.97
+## 
+## Step:  AIC=226.92
+## Label ~ IgE_Total_.IU.ml. + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Sinusitis_Diag0sed + AE + FEV1_Pct_.L. + 
+##     FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Sinusitis_Diag0sed      1   44.230 226.22
+## - FEV1.FVC_PreSalbutamol  1   44.344 226.49
+## &lt;none&gt;                        43.681 226.92
+## - IgE_Total_.IU.ml.       1   44.782 227.51
+## - FEV1_Pct_.L.            1   44.810 227.57
+## - AE                      1   44.855 227.68
+## - Pct_Lymphocytes         1   45.142 228.34
+## - FVC_Pct_.L.             1   45.511 229.19
+## - Eczema_Diag0sed         1   46.329 231.04
+## - Pct_Macrophages         1   93.874 304.49
+## 
+## Step:  AIC=226.22
+## Label ~ IgE_Total_.IU.ml. + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + AE + FEV1_Pct_.L. + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## &lt;none&gt;                        44.230 226.22
+## - AE                      1   45.220 226.52
+## - IgE_Total_.IU.ml.       1   45.278 226.66
+## - FEV1.FVC_PreSalbutamol  1   45.301 226.71
+## - Pct_Lymphocytes         1   45.652 227.51
+## - FEV1_Pct_.L.            1   45.951 228.19
+## - FVC_Pct_.L.             1   46.538 229.51
+## - Eczema_Diag0sed         1   46.892 230.30
+## - Pct_Macrophages         1   97.264 306.18</code></pre>
+<pre class="r"><code>significant_cov = dataTemp[, colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Label ~ ., data = significant_cov)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.8880  -0.4993  -0.0801   0.4832   1.4846  
+## 
+## Coefficients:
+##                          Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            -0.1125631  0.7790446  -0.144   0.8854    
+## IgE_Total_.IU.ml.      -0.0002039  0.0001359  -1.500   0.1368    
+## Pct_Macrophages         0.0366710  0.0034359  10.673   &lt;2e-16 ***
+## Pct_Lymphocytes         0.1026900  0.0587710   1.747   0.0838 .  
+## Eczema_Diag0sed1       -0.3651954  0.1527491  -2.391   0.0188 *  
+## AE                      0.0500162  0.0343015   1.458   0.1481    
+## FEV1_Pct_.L.           -0.0253345  0.0131788  -1.922   0.0576 .  
+## FVC_Pct_.L.             0.0215937  0.0097000   2.226   0.0284 *  
+## FEV1.FVC_PreSalbutamol  0.0214338  0.0141346   1.516   0.1327    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.465582)
+## 
+##     Null deviance: 131.04  on 103  degrees of freedom
+## Residual deviance:  44.23  on  95  degrees of freedom
+## AIC: 226.22
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+<pre class="r"><code>confIntervals = exp(confint(fitted_model_best))</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<p>between 3 classes</p>
+<pre class="r"><code>source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData&lt;-readImputateClinicalData()</code></pre>
+<pre><code>##   missForest iteration 1 in progress...done!
+##     estimated error(s): 0.9628979 
+##     difference(s): 0.001667145 
+##     time: 16.98 seconds
+## 
+##   missForest iteration 2 in progress...done!
+##     estimated error(s): 0.960354 
+##     difference(s): 2.060146e-05 
+##     time: 16.77 seconds
+## 
+##   missForest iteration 3 in progress...done!
+##     estimated error(s): 0.9605461 
+##     difference(s): 1.603678e-05 
+##     time: 16.91 seconds
+## 
+##   missForest iteration 4 in progress...done!
+##     estimated error(s): 0.9606979 
+##     difference(s): 1.234502e-05 
+##     time: 17 seconds
+## 
+##   missForest iteration 5 in progress...done!
+##     estimated error(s): 0.959326 
+##     difference(s): 2.301769e-06 
+##     time: 16.76 seconds
+## 
+##   missForest iteration 6 in progress...done!
+##     estimated error(s): 0.960657 
+##     difference(s): 1.129159e-05 
+##     time: 16.91 seconds</code></pre>
+<pre class="r"><code>source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp&lt;-CleanData(clinicalData)
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/checkCollinearity.R')
+dataTemp$Label[which(dataTemp$Label&gt;2)]=3
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Label ~ ., data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -1.25802  -0.42193   0.05382   0.36745   1.18336  
+## 
+## Coefficients:
+##                             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)               -2.9582250  3.7263500  -0.794   0.4297  
+## Sex1                      -0.1184601  0.1383485  -0.856   0.3945  
+## Age                        0.0033327  0.0058761   0.567   0.5722  
+## Body_Mass_Index_.kg.m2.    0.0015998  0.0146656   0.109   0.9134  
+## IgE_Total_.IU.ml.         -0.0001512  0.0001300  -1.163   0.2483  
+## eosi0phils_.x10.3.uL.     -0.1489661  0.2963272  -0.503   0.6166  
+## neutrophils_.x10.3.uL.    -0.0776832  0.0824379  -0.942   0.3490  
+## Periostin_.ng.mL.          0.0020049  0.0050337   0.398   0.6915  
+## Pct_Eosi0phils             0.0253091  0.0366597   0.690   0.4920  
+## Pct_Neutrophils            0.0260035  0.0364833   0.713   0.4782  
+## Pct_Macrophages            0.0488445  0.0366607   1.332   0.1867  
+## Pct_Lymphocytes            0.0849715  0.0685111   1.240   0.2186  
+## Pct_Mast_cells            -0.3309360  0.8751092  -0.378   0.7063  
+## Fe0                        0.0001428  0.0019678   0.073   0.9423  
+## Eczema_Diag0sed1          -0.3366486  0.1495275  -2.251   0.0272 *
+## Allergic_Rhinitis1        -0.1121557  0.1449025  -0.774   0.4413  
+## Atopy1                     0.1516292  0.1500174   1.011   0.3153  
+## Sinusitis_Diag0sed1       -0.1289795  0.1686458  -0.765   0.4467  
+## Nasal_Polyps_Diag0sed1     0.0769239  0.1590523   0.484   0.6300  
+## oral_corticosteroids1      0.0151080  0.1574031   0.096   0.9238  
+## AE                         0.0213248  0.0339585   0.628   0.5319  
+## wbc                        0.0633050  0.0778598   0.813   0.4187  
+## FEV1_Pct_.L.              -0.0245900  0.0154899  -1.587   0.1165  
+## FEV1_Change                0.0069018  0.0047970   1.439   0.1543  
+## FVC_Pct_.L.                0.0234341  0.0112742   2.079   0.0410 *
+## FEV1.FVC_PreSalbutamol     0.0173776  0.0164579   1.056   0.2943  
+## C_Reactive_Protein_.mg.L.  0.0025163  0.0066103   0.381   0.7045  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.3666645)
+## 
+##     Null deviance: 70.529  on 103  degrees of freedom
+## Residual deviance: 28.233  on  77  degrees of freedom
+## AIC: 215.53
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+<pre class="r"><code># retrieve confidence intervals
+confIntervals = exp(confint(fitted_model))</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre class="r"><code>backward_model = step(fitted_model,  direction=&quot;backward&quot;, trace=1)</code></pre>
+<pre><code>## Start:  AIC=215.53
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Pct_Mast_cells + Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + Sinusitis_Diag0sed + Nasal_Polyps_Diag0sed + oral_corticosteroids + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Fe0                        1   28.235 213.54
+## - oral_corticosteroids       1   28.236 213.55
+## - Body_Mass_Index_.kg.m2.    1   28.238 213.55
+## - Pct_Mast_cells             1   28.286 213.73
+## - C_Reactive_Protein_.mg.L.  1   28.286 213.73
+## - Periostin_.ng.mL.          1   28.291 213.75
+## - Nasal_Polyps_Diag0sed      1   28.319 213.85
+## - eosi0phils_.x10.3.uL.      1   28.326 213.88
+## - Age                        1   28.351 213.97
+## - AE                         1   28.378 214.07
+## - Pct_Eosi0phils             1   28.408 214.18
+## - Pct_Neutrophils            1   28.419 214.22
+## - Sinusitis_Diag0sed         1   28.448 214.32
+## - Allergic_Rhinitis          1   28.453 214.34
+## - wbc                        1   28.476 214.42
+## - Sex                        1   28.502 214.52
+## - neutrophils_.x10.3.uL.     1   28.559 214.73
+## - Atopy                      1   28.608 214.91
+## - FEV1.FVC_PreSalbutamol     1   28.642 215.03
+## - IgE_Total_.IU.ml.          1   28.729 215.35
+## &lt;none&gt;                           28.233 215.53
+## - Pct_Lymphocytes            1   28.797 215.59
+## - Pct_Macrophages            1   28.884 215.91
+## - FEV1_Change                1   28.992 216.29
+## - FEV1_Pct_.L.               1   29.157 216.88
+## - FVC_Pct_.L.                1   29.817 219.21
+## - Eczema_Diag0sed            1   30.092 220.16
+## 
+## Step:  AIC=213.54
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Pct_Mast_cells + Eczema_Diag0sed + Allergic_Rhinitis + Atopy + 
+##     Sinusitis_Diag0sed + Nasal_Polyps_Diag0sed + oral_corticosteroids + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Body_Mass_Index_.kg.m2.    1   28.239 211.56
+## - oral_corticosteroids       1   28.239 211.56
+## - Pct_Mast_cells             1   28.286 211.73
+## - Periostin_.ng.mL.          1   28.292 211.75
+## - C_Reactive_Protein_.mg.L.  1   28.293 211.76
+## - eosi0phils_.x10.3.uL.      1   28.326 211.88
+## - Nasal_Polyps_Diag0sed      1   28.331 211.89
+## - Age                        1   28.351 211.97
+## - AE                         1   28.378 212.07
+## - Pct_Eosi0phils             1   28.415 212.20
+## - Pct_Neutrophils            1   28.425 212.24
+## - Sinusitis_Diag0sed         1   28.450 212.33
+## - Allergic_Rhinitis          1   28.472 212.41
+## - wbc                        1   28.477 212.43
+## - Sex                        1   28.508 212.54
+## - neutrophils_.x10.3.uL.     1   28.563 212.74
+## - Atopy                      1   28.608 212.91
+## - FEV1.FVC_PreSalbutamol     1   28.642 213.03
+## - IgE_Total_.IU.ml.          1   28.731 213.35
+## &lt;none&gt;                           28.235 213.54
+## - Pct_Lymphocytes            1   28.797 213.59
+## - Pct_Macrophages            1   28.896 213.95
+## - FEV1_Change                1   29.015 214.37
+## - FEV1_Pct_.L.               1   29.158 214.89
+## - FVC_Pct_.L.                1   29.824 217.24
+## - Eczema_Diag0sed            1   30.096 218.18
+## 
+## Step:  AIC=211.55
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + 
+##     neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Eosi0phils + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     Nasal_Polyps_Diag0sed + oral_corticosteroids + AE + wbc + 
+##     FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - oral_corticosteroids       1   28.245 209.58
+## - Pct_Mast_cells             1   28.290 209.75
+## - Periostin_.ng.mL.          1   28.294 209.76
+## - C_Reactive_Protein_.mg.L.  1   28.296 209.76
+## - eosi0phils_.x10.3.uL.      1   28.331 209.89
+## - Nasal_Polyps_Diag0sed      1   28.331 209.90
+## - Age                        1   28.357 209.99
+## - AE                         1   28.381 210.08
+## - Pct_Eosi0phils             1   28.434 210.27
+## - Pct_Neutrophils            1   28.448 210.32
+## - Sinusitis_Diag0sed         1   28.451 210.33
+## - Allergic_Rhinitis          1   28.496 210.50
+## - wbc                        1   28.500 210.51
+## - Sex                        1   28.518 210.58
+## - neutrophils_.x10.3.uL.     1   28.588 210.83
+## - Atopy                      1   28.620 210.95
+## - FEV1.FVC_PreSalbutamol     1   28.672 211.14
+## - IgE_Total_.IU.ml.          1   28.733 211.36
+## &lt;none&gt;                           28.239 211.56
+## - Pct_Lymphocytes            1   28.798 211.59
+## - Pct_Macrophages            1   28.951 212.15
+## - FEV1_Change                1   29.030 212.43
+## - FEV1_Pct_.L.               1   29.194 213.01
+## - FVC_Pct_.L.                1   29.828 215.25
+## - Eczema_Diag0sed            1   30.096 216.18
+## 
+## Step:  AIC=209.58
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + 
+##     neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Eosi0phils + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     Nasal_Polyps_Diag0sed + AE + wbc + FEV1_Pct_.L. + FEV1_Change + 
+##     FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Pct_Mast_cells             1   28.296 207.76
+## - Periostin_.ng.mL.          1   28.298 207.77
+## - C_Reactive_Protein_.mg.L.  1   28.299 207.78
+## - eosi0phils_.x10.3.uL.      1   28.341 207.93
+## - Nasal_Polyps_Diag0sed      1   28.355 207.98
+## - Age                        1   28.366 208.02
+## - AE                         1   28.390 208.11
+## - Pct_Eosi0phils             1   28.436 208.28
+## - Pct_Neutrophils            1   28.450 208.33
+## - Sinusitis_Diag0sed         1   28.464 208.38
+## - Allergic_Rhinitis          1   28.509 208.55
+## - wbc                        1   28.516 208.57
+## - Sex                        1   28.526 208.61
+## - neutrophils_.x10.3.uL.     1   28.590 208.84
+## - Atopy                      1   28.623 208.96
+## - FEV1.FVC_PreSalbutamol     1   28.679 209.16
+## - IgE_Total_.IU.ml.          1   28.741 209.39
+## &lt;none&gt;                           28.245 209.58
+## - Pct_Lymphocytes            1   28.809 209.63
+## - Pct_Macrophages            1   28.951 210.15
+## - FEV1_Change                1   29.034 210.44
+## - FEV1_Pct_.L.               1   29.204 211.05
+## - FVC_Pct_.L.                1   29.836 213.28
+## - Eczema_Diag0sed            1   30.121 214.26
+## 
+## Step:  AIC=207.76
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + 
+##     neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Eosi0phils + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Eczema_Diag0sed + 
+##     Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + Nasal_Polyps_Diag0sed + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Periostin_.ng.mL.          1   28.337 205.91
+## - C_Reactive_Protein_.mg.L.  1   28.357 205.99
+## - eosi0phils_.x10.3.uL.      1   28.404 206.16
+## - Nasal_Polyps_Diag0sed      1   28.416 206.21
+## - Age                        1   28.423 206.23
+## - AE                         1   28.426 206.24
+## - Pct_Eosi0phils             1   28.508 206.54
+## - Pct_Neutrophils            1   28.518 206.58
+## - Sinusitis_Diag0sed         1   28.538 206.65
+## - Allergic_Rhinitis          1   28.539 206.65
+## - Sex                        1   28.558 206.72
+## - wbc                        1   28.604 206.89
+## - Atopy                      1   28.669 207.13
+## - neutrophils_.x10.3.uL.     1   28.671 207.13
+## - FEV1.FVC_PreSalbutamol     1   28.730 207.35
+## - Pct_Lymphocytes            1   28.812 207.65
+## - IgE_Total_.IU.ml.          1   28.831 207.71
+## &lt;none&gt;                           28.296 207.76
+## - Pct_Macrophages            1   29.039 208.46
+## - FEV1_Change                1   29.161 208.90
+## - FEV1_Pct_.L.               1   29.269 209.28
+## - FVC_Pct_.L.                1   29.963 211.72
+## - Eczema_Diag0sed            1   30.254 212.72
+## 
+## Step:  AIC=205.91
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + 
+##     neutrophils_.x10.3.uL. + Pct_Eosi0phils + Pct_Neutrophils + 
+##     Pct_Macrophages + Pct_Lymphocytes + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + Sinusitis_Diag0sed + Nasal_Polyps_Diag0sed + AE + 
+##     wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - C_Reactive_Protein_.mg.L.  1   28.395 204.13
+## - eosi0phils_.x10.3.uL.      1   28.421 204.22
+## - AE                         1   28.447 204.32
+## - Nasal_Polyps_Diag0sed      1   28.474 204.42
+## - Age                        1   28.515 204.57
+## - Pct_Eosi0phils             1   28.540 204.66
+## - Pct_Neutrophils            1   28.544 204.67
+## - Sex                        1   28.571 204.77
+## - Allergic_Rhinitis          1   28.578 204.80
+## - Sinusitis_Diag0sed         1   28.626 204.97
+## - wbc                        1   28.633 205.00
+## - neutrophils_.x10.3.uL.     1   28.698 205.23
+## - Atopy                      1   28.718 205.31
+## - FEV1.FVC_PreSalbutamol     1   28.732 205.35
+## - Pct_Lymphocytes            1   28.836 205.73
+## - IgE_Total_.IU.ml.          1   28.838 205.74
+## &lt;none&gt;                           28.337 205.91
+## - Pct_Macrophages            1   29.053 206.51
+## - FEV1_Change                1   29.166 206.91
+## - FEV1_Pct_.L.               1   29.271 207.29
+## - FVC_Pct_.L.                1   29.975 209.76
+## - Eczema_Diag0sed            1   30.282 210.82
+## 
+## Step:  AIC=204.13
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + 
+##     neutrophils_.x10.3.uL. + Pct_Eosi0phils + Pct_Neutrophils + 
+##     Pct_Macrophages + Pct_Lymphocytes + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + Sinusitis_Diag0sed + Nasal_Polyps_Diag0sed + AE + 
+##     wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - eosi0phils_.x10.3.uL.   1   28.474 202.42
+## - AE                      1   28.525 202.60
+## - Age                     1   28.541 202.66
+## - Nasal_Polyps_Diag0sed   1   28.543 202.67
+## - Pct_Eosi0phils          1   28.585 202.82
+## - Pct_Neutrophils         1   28.589 202.84
+## - Sex                     1   28.605 202.89
+## - Allergic_Rhinitis       1   28.616 202.94
+## - Sinusitis_Diag0sed      1   28.666 203.12
+## - wbc                     1   28.708 203.27
+## - neutrophils_.x10.3.uL.  1   28.747 203.41
+## - FEV1.FVC_PreSalbutamol  1   28.747 203.41
+## - Atopy                   1   28.816 203.66
+## - Pct_Lymphocytes         1   28.869 203.85
+## - IgE_Total_.IU.ml.       1   28.938 204.10
+## &lt;none&gt;                        28.395 204.13
+## - Pct_Macrophages         1   29.086 204.63
+## - FEV1_Change             1   29.176 204.95
+## - FEV1_Pct_.L.            1   29.273 205.29
+## - FVC_Pct_.L.             1   30.013 207.89
+## - Eczema_Diag0sed         1   30.385 209.17
+## 
+## Step:  AIC=202.42
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + neutrophils_.x10.3.uL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     Nasal_Polyps_Diag0sed + AE + wbc + FEV1_Pct_.L. + FEV1_Change + 
+##     FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Nasal_Polyps_Diag0sed   1   28.601 200.88
+## - AE                      1   28.630 200.99
+## - Age                     1   28.633 201.00
+## - Pct_Eosi0phils          1   28.679 201.16
+## - Pct_Neutrophils         1   28.687 201.19
+## - Sex                     1   28.692 201.21
+## - wbc                     1   28.708 201.27
+## - Allergic_Rhinitis       1   28.740 201.38
+## - neutrophils_.x10.3.uL.  1   28.747 201.41
+## - Sinusitis_Diag0sed      1   28.748 201.41
+## - Atopy                   1   28.883 201.90
+## - FEV1.FVC_PreSalbutamol  1   28.902 201.97
+## - Pct_Lymphocytes         1   28.925 202.05
+## &lt;none&gt;                        28.474 202.42
+## - IgE_Total_.IU.ml.       1   29.107 202.71
+## - Pct_Macrophages         1   29.205 203.05
+## - FEV1_Change             1   29.231 203.15
+## - FEV1_Pct_.L.            1   29.460 203.96
+## - FVC_Pct_.L.             1   30.260 206.74
+## - Eczema_Diag0sed         1   30.387 207.18
+## 
+## Step:  AIC=200.88
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + neutrophils_.x10.3.uL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + Sinusitis_Diag0sed + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Sinusitis_Diag0sed      1   28.790 199.56
+## - Age                     1   28.793 199.58
+## - wbc                     1   28.796 199.59
+## - AE                      1   28.804 199.62
+## - neutrophils_.x10.3.uL.  1   28.824 199.69
+## - Pct_Eosi0phils          1   28.836 199.73
+## - Pct_Neutrophils         1   28.845 199.76
+## - Sex                     1   28.869 199.85
+## - Allergic_Rhinitis       1   28.885 199.91
+## - Atopy                   1   28.987 200.27
+## - Pct_Lymphocytes         1   29.038 200.46
+## - FEV1.FVC_PreSalbutamol  1   29.102 200.69
+## &lt;none&gt;                        28.601 200.88
+## - IgE_Total_.IU.ml.       1   29.234 201.16
+## - FEV1_Change             1   29.327 201.49
+## - Pct_Macrophages         1   29.387 201.70
+## - FEV1_Pct_.L.            1   29.717 202.86
+## - FVC_Pct_.L.             1   30.567 205.79
+## - Eczema_Diag0sed         1   30.683 206.19
+## 
+## Step:  AIC=199.56
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + neutrophils_.x10.3.uL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + AE + wbc + 
+##     FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - wbc                     1   28.930 198.07
+## - Pct_Eosi0phils          1   28.946 198.13
+## - Age                     1   28.954 198.16
+## - Pct_Neutrophils         1   28.956 198.16
+## - AE                      1   28.969 198.21
+## - neutrophils_.x10.3.uL.  1   28.977 198.24
+## - Allergic_Rhinitis       1   29.060 198.53
+## - Sex                     1   29.092 198.65
+## - Pct_Lymphocytes         1   29.144 198.84
+## - Atopy                   1   29.209 199.07
+## &lt;none&gt;                        28.790 199.56
+## - IgE_Total_.IU.ml.       1   29.412 199.79
+## - Pct_Macrophages         1   29.452 199.93
+## - FEV1_Change             1   29.475 200.01
+## - FEV1.FVC_PreSalbutamol  1   29.514 200.15
+## - FEV1_Pct_.L.            1   30.364 203.10
+## - Eczema_Diag0sed         1   31.009 205.29
+## - FVC_Pct_.L.             1   31.174 205.84
+## 
+## Step:  AIC=198.07
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + neutrophils_.x10.3.uL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + AE + FEV1_Pct_.L. + 
+##     FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - neutrophils_.x10.3.uL.  1   28.979 196.25
+## - Pct_Eosi0phils          1   29.055 196.52
+## - Pct_Neutrophils         1   29.065 196.55
+## - AE                      1   29.123 196.76
+## - Age                     1   29.143 196.83
+## - Allergic_Rhinitis       1   29.187 196.99
+## - Pct_Lymphocytes         1   29.232 197.15
+## - Sex                     1   29.247 197.21
+## - Atopy                   1   29.305 197.41
+## &lt;none&gt;                        28.930 198.07
+## - IgE_Total_.IU.ml.       1   29.532 198.21
+## - Pct_Macrophages         1   29.536 198.23
+## - FEV1_Change             1   29.634 198.57
+## - FEV1.FVC_PreSalbutamol  1   29.793 199.12
+## - FEV1_Pct_.L.            1   30.771 202.49
+## - Eczema_Diag0sed         1   31.375 204.51
+## - FVC_Pct_.L.             1   31.588 205.21
+## 
+## Step:  AIC=196.25
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + Pct_Eosi0phils + Pct_Neutrophils + 
+##     Pct_Macrophages + Pct_Lymphocytes + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + AE + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Pct_Eosi0phils          1   29.109 194.71
+## - Pct_Neutrophils         1   29.119 194.75
+## - AE                      1   29.158 194.89
+## - Age                     1   29.183 194.98
+## - Sex                     1   29.287 195.34
+## - Allergic_Rhinitis       1   29.294 195.37
+## - Pct_Lymphocytes         1   29.354 195.58
+## - Atopy                   1   29.400 195.75
+## &lt;none&gt;                        28.979 196.25
+## - IgE_Total_.IU.ml.       1   29.602 196.46
+## - Pct_Macrophages         1   29.602 196.46
+## - FEV1_Change             1   29.707 196.83
+## - FEV1.FVC_PreSalbutamol  1   29.831 197.26
+## - FEV1_Pct_.L.            1   30.771 200.49
+## - Eczema_Diag0sed         1   31.466 202.81
+## - FVC_Pct_.L.             1   31.598 203.25
+## 
+## Step:  AIC=194.71
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + Pct_Neutrophils + Pct_Macrophages + 
+##     Pct_Lymphocytes + Eczema_Diag0sed + Allergic_Rhinitis + Atopy + 
+##     AE + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Pct_Neutrophils         1   29.133 192.80
+## - AE                      1   29.275 193.30
+## - Pct_Lymphocytes         1   29.355 193.59
+## - Age                     1   29.373 193.65
+## - Allergic_Rhinitis       1   29.389 193.71
+## - Sex                     1   29.475 194.01
+## - Atopy                   1   29.560 194.31
+## &lt;none&gt;                        29.109 194.71
+## - IgE_Total_.IU.ml.       1   29.762 195.02
+## - FEV1_Change             1   29.831 195.26
+## - FEV1.FVC_PreSalbutamol  1   30.048 196.01
+## - FEV1_Pct_.L.            1   31.013 199.30
+## - Eczema_Diag0sed         1   31.667 201.47
+## - FVC_Pct_.L.             1   31.824 201.98
+## - Pct_Macrophages         1   40.026 225.84
+## 
+## Step:  AIC=192.8
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + AE + FEV1_Pct_.L. + 
+##     FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - AE                      1   29.287 191.34
+## - Pct_Lymphocytes         1   29.372 191.65
+## - Age                     1   29.395 191.73
+## - Allergic_Rhinitis       1   29.397 191.74
+## - Sex                     1   29.500 192.10
+## - Atopy                   1   29.587 192.41
+## &lt;none&gt;                        29.133 192.80
+## - IgE_Total_.IU.ml.       1   29.783 193.09
+## - FEV1_Change             1   29.840 193.29
+## - FEV1.FVC_PreSalbutamol  1   30.053 194.03
+## - FEV1_Pct_.L.            1   31.021 197.33
+## - Eczema_Diag0sed         1   31.667 199.47
+## - FVC_Pct_.L.             1   31.848 200.06
+## - Pct_Macrophages         1   49.537 246.01
+## 
+## Step:  AIC=191.35
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + Pct_Macrophages + Pct_Lymphocytes + 
+##     Eczema_Diag0sed + Allergic_Rhinitis + Atopy + FEV1_Pct_.L. + 
+##     FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Pct_Lymphocytes         1   29.487 190.06
+## - Age                     1   29.590 190.41
+## - Allergic_Rhinitis       1   29.590 190.41
+## - Sex                     1   29.617 190.51
+## - Atopy                   1   29.683 190.74
+## &lt;none&gt;                        29.287 191.34
+## - IgE_Total_.IU.ml.       1   29.931 191.61
+## - FEV1_Change             1   30.083 192.13
+## - FEV1.FVC_PreSalbutamol  1   30.206 192.56
+## - FEV1_Pct_.L.            1   31.139 195.72
+## - Eczema_Diag0sed         1   31.680 197.51
+## - FVC_Pct_.L.             1   31.955 198.41
+## - Pct_Macrophages         1   49.601 244.14
+## 
+## Step:  AIC=190.06
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + Pct_Macrophages + Eczema_Diag0sed + 
+##     Allergic_Rhinitis + Atopy + FEV1_Pct_.L. + FEV1_Change + 
+##     FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Age                     1   29.775 189.06
+## - Allergic_Rhinitis       1   29.810 189.19
+## - Sex                     1   29.838 189.28
+## - Atopy                   1   29.863 189.37
+## &lt;none&gt;                        29.487 190.06
+## - IgE_Total_.IU.ml.       1   30.175 190.45
+## - FEV1_Change             1   30.340 191.02
+## - FEV1.FVC_PreSalbutamol  1   30.457 191.42
+## - FEV1_Pct_.L.            1   31.498 194.91
+## - Eczema_Diag0sed         1   31.836 196.02
+## - FVC_Pct_.L.             1   32.440 197.98
+## - Pct_Macrophages         1   52.500 248.05
+## 
+## Step:  AIC=189.06
+## Label ~ Sex + IgE_Total_.IU.ml. + Pct_Macrophages + Eczema_Diag0sed + 
+##     Allergic_Rhinitis + Atopy + FEV1_Pct_.L. + FEV1_Change + 
+##     FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Atopy                   1   30.025 187.93
+## - Sex                     1   30.053 188.03
+## - Allergic_Rhinitis       1   30.150 188.37
+## &lt;none&gt;                        29.775 189.06
+## - IgE_Total_.IU.ml.       1   30.465 189.44
+## - FEV1.FVC_PreSalbutamol  1   30.507 189.59
+## - FEV1_Change             1   30.636 190.03
+## - FEV1_Pct_.L.            1   31.521 192.99
+## - FVC_Pct_.L.             1   32.441 195.98
+## - Eczema_Diag0sed         1   32.505 196.19
+## - Pct_Macrophages         1   52.513 246.07
+## 
+## Step:  AIC=187.93
+## Label ~ Sex + IgE_Total_.IU.ml. + Pct_Macrophages + Eczema_Diag0sed + 
+##     Allergic_Rhinitis + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + 
+##     FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Allergic_Rhinitis       1   30.270 186.78
+## - Sex                     1   30.352 187.06
+## - IgE_Total_.IU.ml.       1   30.585 187.85
+## &lt;none&gt;                        30.025 187.93
+## - FEV1.FVC_PreSalbutamol  1   30.843 188.73
+## - FEV1_Change             1   30.965 189.14
+## - FEV1_Pct_.L.            1   31.917 192.29
+## - Eczema_Diag0sed         1   32.715 194.86
+## - FVC_Pct_.L.             1   32.808 195.15
+## - Pct_Macrophages         1   54.225 247.41
+## 
+## Step:  AIC=186.78
+## Label ~ Sex + IgE_Total_.IU.ml. + Pct_Macrophages + Eczema_Diag0sed + 
+##     FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Sex                     1   30.636 186.03
+## - IgE_Total_.IU.ml.       1   30.795 186.57
+## &lt;none&gt;                        30.270 186.78
+## - FEV1.FVC_PreSalbutamol  1   31.206 187.95
+## - FEV1_Change             1   31.489 188.89
+## - FEV1_Pct_.L.            1   32.329 191.62
+## - Eczema_Diag0sed         1   32.953 193.61
+## - FVC_Pct_.L.             1   33.197 194.38
+## - Pct_Macrophages         1   54.301 245.56
+## 
+## Step:  AIC=186.03
+## Label ~ IgE_Total_.IU.ml. + Pct_Macrophages + Eczema_Diag0sed + 
+##     FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - IgE_Total_.IU.ml.       1   31.211 185.96
+## &lt;none&gt;                        30.636 186.03
+## - FEV1.FVC_PreSalbutamol  1   31.308 186.29
+## - FEV1_Change             1   31.710 187.61
+## - FEV1_Pct_.L.            1   32.386 189.81
+## - Eczema_Diag0sed         1   33.228 192.48
+## - FVC_Pct_.L.             1   33.257 192.57
+## - Pct_Macrophages         1   55.636 246.08
+## 
+## Step:  AIC=185.96
+## Label ~ Pct_Macrophages + Eczema_Diag0sed + FEV1_Pct_.L. + FEV1_Change + 
+##     FVC_Pct_.L. + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - FEV1.FVC_PreSalbutamol  1   31.778 185.84
+## &lt;none&gt;                        31.211 185.96
+## - FEV1_Change             1   32.341 187.66
+## - FEV1_Pct_.L.            1   32.864 189.33
+## - FVC_Pct_.L.             1   33.828 192.34
+## - Eczema_Diag0sed         1   34.044 193.00
+## - Pct_Macrophages         1   56.905 246.43
+## 
+## Step:  AIC=185.83
+## Label ~ Pct_Macrophages + Eczema_Diag0sed + FEV1_Pct_.L. + FEV1_Change + 
+##     FVC_Pct_.L.
+## 
+##                   Df Deviance    AIC
+## &lt;none&gt;                 31.778 185.84
+## - FEV1_Change      1   32.914 187.49
+## - FEV1_Pct_.L.     1   33.699 189.94
+## - Eczema_Diag0sed  1   34.136 191.28
+## - FVC_Pct_.L.      1   34.354 191.94
+## - Pct_Macrophages  1   57.257 245.07</code></pre>
+<pre class="r"><code>significant_cov = dataTemp[, colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Label ~ ., data = significant_cov)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -1.34941  -0.47856   0.02724   0.36178   1.34470  
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       1.014698   0.316623   3.205  0.00182 ** 
+## Pct_Macrophages   0.024168   0.002726   8.864 3.52e-14 ***
+## Eczema_Diag0sed1 -0.330549   0.122573  -2.697  0.00824 ** 
+## FEV1_Pct_.L.     -0.011709   0.004810  -2.434  0.01673 *  
+## FEV1_Change       0.007652   0.004088   1.872  0.06425 .  
+## FVC_Pct_.L.       0.014680   0.005208   2.819  0.00584 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.3242645)
+## 
+##     Null deviance: 70.529  on 103  degrees of freedom
+## Residual deviance: 31.778  on  98  degrees of freedom
+## AIC: 185.83
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+<pre class="r"><code>confIntervals = exp(confint(fitted_model_best))</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<p>between tac3a and tac3b classes</p>
+<pre class="r"><code>source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData&lt;-readImputateClinicalData()</code></pre>
+<pre><code>##   missForest iteration 1 in progress...done!
+##     estimated error(s): 0.9624862 
+##     difference(s): 0.001734844 
+##     time: 17.07 seconds
+## 
+##   missForest iteration 2 in progress...done!
+##     estimated error(s): 0.9586956 
+##     difference(s): 3.356838e-05 
+##     time: 16.95 seconds
+## 
+##   missForest iteration 3 in progress...done!
+##     estimated error(s): 0.960919 
+##     difference(s): 1.039259e-05 
+##     time: 16.93 seconds
+## 
+##   missForest iteration 4 in progress...done!
+##     estimated error(s): 0.9642804 
+##     difference(s): 1.126112e-05 
+##     time: 16.96 seconds</code></pre>
+<pre class="r"><code>source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp&lt;-CleanData(clinicalData)
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/checkCollinearity.R')
+indStay = which(dataTemp$Label&gt;2)
+dataTemp = dataTemp[indStay,]
+
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Label ~ ., data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5802  -0.1837  -0.0331   0.1776   0.7455  
+## 
+## Coefficients:
+##                             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)                6.1539520  2.9099731   2.115   0.0429 *
+## Sex1                       0.0606925  0.1712035   0.355   0.7254  
+## Age                        0.0048122  0.0058315   0.825   0.4158  
+## Body_Mass_Index_.kg.m2.   -0.0034646  0.0146982  -0.236   0.8153  
+## IgE_Total_.IU.ml.         -0.0001426  0.0002802  -0.509   0.6145  
+## eosi0phils_.x10.3.uL.      0.1854435  0.3242878   0.572   0.5717  
+## neutrophils_.x10.3.uL.     0.0892676  0.0933854   0.956   0.3468  
+## Periostin_.ng.mL.         -0.0122712  0.0064707  -1.896   0.0676 .
+## Pct_Eosi0phils            -0.0202932  0.0284426  -0.713   0.4811  
+## Pct_Neutrophils           -0.0295406  0.0264852  -1.115   0.2736  
+## Pct_Macrophages           -0.0180223  0.0269636  -0.668   0.5090  
+## Pct_Lymphocytes            0.0788464  0.0608923   1.295   0.2052  
+## Pct_Mast_cells            -0.2926023  0.9268319  -0.316   0.7544  
+## Fe0                        0.0004288  0.0022638   0.189   0.8510  
+## Eczema_Diag0sed1           0.0257026  0.1626293   0.158   0.8755  
+## Allergic_Rhinitis1        -0.1374217  0.1355473  -1.014   0.3188  
+## Atopy1                    -0.0694736  0.1669605  -0.416   0.6803  
+## Sinusitis_Diag0sed1        0.0211530  0.2072142   0.102   0.9194  
+## Nasal_Polyps_Diag0sed1    -0.1404166  0.1848856  -0.759   0.4535  
+## oral_corticosteroids1     -0.0905611  0.2091404  -0.433   0.6681  
+## AE                         0.0244291  0.0339821   0.719   0.4778  
+## wbc                       -0.0992813  0.0824299  -1.204   0.2378  
+## FEV1_Pct_.L.               0.0023082  0.0158838   0.145   0.8854  
+## FEV1_Change               -0.0065146  0.0056874  -1.145   0.2611  
+## FVC_Pct_.L.               -0.0036851  0.0114361  -0.322   0.7495  
+## FEV1.FVC_PreSalbutamol     0.0120466  0.0166470   0.724   0.4749  
+## C_Reactive_Protein_.mg.L. -0.0079163  0.0121806  -0.650   0.5207  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.1668937)
+## 
+##     Null deviance: 14.2456  on 56  degrees of freedom
+## Residual deviance:  5.0068  on 30  degrees of freedom
+## AIC: 79.121
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+<pre class="r"><code># retrieve confidence intervals
+confIntervals = exp(confint(fitted_model))</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre class="r"><code>backward_model = step(fitted_model,  direction=&quot;backward&quot;, trace=1)</code></pre>
+<pre><code>## Start:  AIC=79.12
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Pct_Mast_cells + Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + Sinusitis_Diag0sed + Nasal_Polyps_Diag0sed + oral_corticosteroids + 
+##     AE + wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Sinusitis_Diag0sed         1   5.0085 77.140
+## - FEV1_Pct_.L.               1   5.0103 77.161
+## - Eczema_Diag0sed            1   5.0110 77.168
+## - Fe0                        1   5.0128 77.189
+## - Body_Mass_Index_.kg.m2.    1   5.0161 77.226
+## - Pct_Mast_cells             1   5.0234 77.310
+## - FVC_Pct_.L.                1   5.0241 77.318
+## - Sex                        1   5.0278 77.359
+## - Atopy                      1   5.0357 77.449
+## - oral_corticosteroids       1   5.0381 77.476
+## - IgE_Total_.IU.ml.          1   5.0500 77.611
+## - eosi0phils_.x10.3.uL.      1   5.0614 77.739
+## - C_Reactive_Protein_.mg.L.  1   5.0773 77.918
+## - Pct_Macrophages            1   5.0814 77.963
+## - Pct_Eosi0phils             1   5.0918 78.080
+## - AE                         1   5.0931 78.094
+## - FEV1.FVC_PreSalbutamol     1   5.0942 78.107
+## - Nasal_Polyps_Diag0sed      1   5.1031 78.206
+## - Age                        1   5.1205 78.400
+## - neutrophils_.x10.3.uL.     1   5.1593 78.831
+## - Allergic_Rhinitis          1   5.1784 79.041
+## &lt;none&gt;                           5.0068 79.121
+## - Pct_Neutrophils            1   5.2144 79.437
+## - FEV1_Change                1   5.2258 79.561
+## - wbc                        1   5.2489 79.812
+## - Pct_Lymphocytes            1   5.2866 80.220
+## - Periostin_.ng.mL.          1   5.6070 83.574
+## 
+## Step:  AIC=77.14
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Pct_Mast_cells + Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + Nasal_Polyps_Diag0sed + oral_corticosteroids + AE + 
+##     wbc + FEV1_Pct_.L. + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - FEV1_Pct_.L.               1   5.0143 75.205
+## - Fe0                        1   5.0149 75.212
+## - Eczema_Diag0sed            1   5.0150 75.214
+## - Body_Mass_Index_.kg.m2.    1   5.0175 75.242
+## - Pct_Mast_cells             1   5.0269 75.348
+## - Sex                        1   5.0278 75.359
+## - FVC_Pct_.L.                1   5.0293 75.376
+## - Atopy                      1   5.0360 75.452
+## - oral_corticosteroids       1   5.0404 75.502
+## - IgE_Total_.IU.ml.          1   5.0538 75.653
+## - eosi0phils_.x10.3.uL.      1   5.0634 75.761
+## - C_Reactive_Protein_.mg.L.  1   5.0778 75.923
+## - Pct_Macrophages            1   5.0818 75.968
+## - Pct_Eosi0phils             1   5.0922 76.084
+## - FEV1.FVC_PreSalbutamol     1   5.0953 76.119
+## - AE                         1   5.0970 76.139
+## - Nasal_Polyps_Diag0sed      1   5.1092 76.274
+## - Age                        1   5.1314 76.522
+## - neutrophils_.x10.3.uL.     1   5.1600 76.839
+## - Allergic_Rhinitis          1   5.1816 77.076
+## &lt;none&gt;                           5.0085 77.140
+## - Pct_Neutrophils            1   5.2176 77.472
+## - FEV1_Change                1   5.2258 77.561
+## - wbc                        1   5.2628 77.963
+## - Pct_Lymphocytes            1   5.3213 78.593
+## - Periostin_.ng.mL.          1   5.6075 81.579
+## 
+## Step:  AIC=75.21
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Pct_Mast_cells + Fe0 + Eczema_Diag0sed + Allergic_Rhinitis + 
+##     Atopy + Nasal_Polyps_Diag0sed + oral_corticosteroids + AE + 
+##     wbc + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Eczema_Diag0sed            1   5.0198 73.268
+## - Fe0                        1   5.0217 73.290
+## - Body_Mass_Index_.kg.m2.    1   5.0241 73.317
+## - Sex                        1   5.0284 73.366
+## - Pct_Mast_cells             1   5.0371 73.465
+## - Atopy                      1   5.0394 73.490
+## - oral_corticosteroids       1   5.0454 73.558
+## - FVC_Pct_.L.                1   5.0524 73.638
+## - IgE_Total_.IU.ml.          1   5.0589 73.710
+## - eosi0phils_.x10.3.uL.      1   5.0669 73.801
+## - C_Reactive_Protein_.mg.L.  1   5.0778 73.924
+## - Pct_Macrophages            1   5.0856 74.010
+## - Pct_Eosi0phils             1   5.0963 74.130
+## - AE                         1   5.1128 74.315
+## - Nasal_Polyps_Diag0sed      1   5.1155 74.345
+## - neutrophils_.x10.3.uL.     1   5.1600 74.839
+## - Age                        1   5.1726 74.977
+## - Allergic_Rhinitis          1   5.1899 75.167
+## &lt;none&gt;                           5.0143 75.205
+## - Pct_Neutrophils            1   5.2239 75.540
+## - FEV1_Change                1   5.2623 75.958
+## - wbc                        1   5.2656 75.993
+## - Pct_Lymphocytes            1   5.3215 76.595
+## - Periostin_.ng.mL.          1   5.6201 79.707
+## - FEV1.FVC_PreSalbutamol     1   5.7212 80.723
+## 
+## Step:  AIC=73.27
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Pct_Mast_cells + Fe0 + Allergic_Rhinitis + Atopy + Nasal_Polyps_Diag0sed + 
+##     oral_corticosteroids + AE + wbc + FEV1_Change + FVC_Pct_.L. + 
+##     FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Fe0                        1   5.0276 71.357
+## - Body_Mass_Index_.kg.m2.    1   5.0281 71.362
+## - Sex                        1   5.0355 71.446
+## - Pct_Mast_cells             1   5.0385 71.481
+## - Atopy                      1   5.0493 71.602
+## - FVC_Pct_.L.                1   5.0574 71.693
+## - oral_corticosteroids       1   5.0574 71.694
+## - IgE_Total_.IU.ml.          1   5.0675 71.807
+## - eosi0phils_.x10.3.uL.      1   5.0700 71.836
+## - C_Reactive_Protein_.mg.L.  1   5.0895 72.054
+## - Pct_Macrophages            1   5.0944 72.109
+## - Pct_Eosi0phils             1   5.1080 72.261
+## - Nasal_Polyps_Diag0sed      1   5.1221 72.418
+## - AE                         1   5.1310 72.518
+## - neutrophils_.x10.3.uL.     1   5.1604 72.843
+## - Age                        1   5.1742 72.995
+## - Allergic_Rhinitis          1   5.1977 73.253
+## &lt;none&gt;                           5.0198 73.268
+## - Pct_Neutrophils            1   5.2361 73.673
+## - wbc                        1   5.2656 73.993
+## - FEV1_Change                1   5.2753 74.098
+## - Pct_Lymphocytes            1   5.3347 74.736
+## - Periostin_.ng.mL.          1   5.6537 78.047
+## - FEV1.FVC_PreSalbutamol     1   5.7239 78.750
+## 
+## Step:  AIC=71.36
+## Label ~ Sex + Age + Body_Mass_Index_.kg.m2. + IgE_Total_.IU.ml. + 
+##     eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Pct_Mast_cells + Allergic_Rhinitis + Atopy + Nasal_Polyps_Diag0sed + 
+##     oral_corticosteroids + AE + wbc + FEV1_Change + FVC_Pct_.L. + 
+##     FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Body_Mass_Index_.kg.m2.    1   5.0354 69.446
+## - Sex                        1   5.0391 69.487
+## - Pct_Mast_cells             1   5.0450 69.553
+## - oral_corticosteroids       1   5.0590 69.711
+## - FVC_Pct_.L.                1   5.0598 69.720
+## - Atopy                      1   5.0660 69.790
+## - IgE_Total_.IU.ml.          1   5.0705 69.841
+## - eosi0phils_.x10.3.uL.      1   5.0761 69.904
+## - Pct_Macrophages            1   5.0981 70.151
+## - C_Reactive_Protein_.mg.L.  1   5.0985 70.155
+## - Pct_Eosi0phils             1   5.1087 70.268
+## - Nasal_Polyps_Diag0sed      1   5.1290 70.495
+## - AE                         1   5.1349 70.561
+## - neutrophils_.x10.3.uL.     1   5.1744 70.998
+## - Age                        1   5.1797 71.055
+## &lt;none&gt;                           5.0276 71.357
+## - Allergic_Rhinitis          1   5.2151 71.444
+## - Pct_Neutrophils            1   5.2382 71.695
+## - FEV1_Change                1   5.2810 72.160
+## - wbc                        1   5.2907 72.264
+## - Pct_Lymphocytes            1   5.3383 72.775
+## - Periostin_.ng.mL.          1   5.6552 76.062
+## - FEV1.FVC_PreSalbutamol     1   5.8041 77.544
+## 
+## Step:  AIC=69.45
+## Label ~ Sex + Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + 
+##     neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Eosi0phils + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Pct_Mast_cells + 
+##     Allergic_Rhinitis + Atopy + Nasal_Polyps_Diag0sed + oral_corticosteroids + 
+##     AE + wbc + FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Sex                        1   5.0480 67.588
+## - Pct_Mast_cells             1   5.0535 67.649
+## - FVC_Pct_.L.                1   5.0610 67.734
+## - oral_corticosteroids       1   5.0746 67.887
+## - IgE_Total_.IU.ml.          1   5.0747 67.888
+## - Atopy                      1   5.0803 67.951
+## - eosi0phils_.x10.3.uL.      1   5.0873 68.029
+## - Pct_Macrophages            1   5.1236 68.435
+## - C_Reactive_Protein_.mg.L.  1   5.1263 68.465
+## - Pct_Eosi0phils             1   5.1273 68.476
+## - Nasal_Polyps_Diag0sed      1   5.1448 68.671
+## - AE                         1   5.1494 68.721
+## - Age                        1   5.1820 69.081
+## - neutrophils_.x10.3.uL.     1   5.1868 69.133
+## - Allergic_Rhinitis          1   5.2152 69.445
+## &lt;none&gt;                           5.0354 69.446
+## - Pct_Neutrophils            1   5.2781 70.128
+## - wbc                        1   5.3128 70.501
+## - FEV1_Change                1   5.3199 70.578
+## - Pct_Lymphocytes            1   5.3460 70.857
+## - Periostin_.ng.mL.          1   5.6557 74.067
+## - FEV1.FVC_PreSalbutamol     1   5.8161 75.661
+## 
+## Step:  AIC=67.59
+## Label ~ Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + 
+##     Periostin_.ng.mL. + Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + 
+##     Pct_Lymphocytes + Pct_Mast_cells + Allergic_Rhinitis + Atopy + 
+##     Nasal_Polyps_Diag0sed + oral_corticosteroids + AE + wbc + 
+##     FEV1_Change + FVC_Pct_.L. + FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - FVC_Pct_.L.                1   5.0725 65.863
+## - Pct_Mast_cells             1   5.0776 65.921
+## - oral_corticosteroids       1   5.0787 65.933
+## - eosi0phils_.x10.3.uL.      1   5.0885 66.043
+## - IgE_Total_.IU.ml.          1   5.0906 66.066
+## - Atopy                      1   5.0950 66.116
+## - C_Reactive_Protein_.mg.L.  1   5.1290 66.495
+## - Pct_Eosi0phils             1   5.1418 66.637
+## - Pct_Macrophages            1   5.1421 66.640
+## - Nasal_Polyps_Diag0sed      1   5.1640 66.883
+## - AE                         1   5.1874 67.140
+## - neutrophils_.x10.3.uL.     1   5.1926 67.198
+## - Age                        1   5.2030 67.312
+## - Allergic_Rhinitis          1   5.2194 67.490
+## &lt;none&gt;                           5.0480 67.588
+## - Pct_Neutrophils            1   5.3018 68.384
+## - wbc                        1   5.3156 68.532
+## - FEV1_Change                1   5.3306 68.693
+## - Pct_Lymphocytes            1   5.3816 69.235
+## - Periostin_.ng.mL.          1   5.6833 72.345
+## - FEV1.FVC_PreSalbutamol     1   6.0240 75.663
+## 
+## Step:  AIC=65.86
+## Label ~ Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + 
+##     Periostin_.ng.mL. + Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + 
+##     Pct_Lymphocytes + Pct_Mast_cells + Allergic_Rhinitis + Atopy + 
+##     Nasal_Polyps_Diag0sed + oral_corticosteroids + AE + wbc + 
+##     FEV1_Change + FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Pct_Mast_cells             1   5.0906 64.067
+## - eosi0phils_.x10.3.uL.      1   5.1048 64.226
+## - oral_corticosteroids       1   5.1050 64.227
+## - IgE_Total_.IU.ml.          1   5.1086 64.268
+## - Atopy                      1   5.1194 64.388
+## - C_Reactive_Protein_.mg.L.  1   5.1431 64.651
+## - Pct_Macrophages            1   5.1551 64.785
+## - Pct_Eosi0phils             1   5.1560 64.794
+## - Nasal_Polyps_Diag0sed      1   5.1862 65.127
+## - neutrophils_.x10.3.uL.     1   5.1985 65.263
+## - AE                         1   5.1992 65.270
+## - Age                        1   5.2440 65.758
+## - Allergic_Rhinitis          1   5.2507 65.832
+## &lt;none&gt;                           5.0725 65.863
+## - Pct_Neutrophils            1   5.3093 66.464
+## - wbc                        1   5.3171 66.548
+## - FEV1_Change                1   5.3320 66.707
+## - Pct_Lymphocytes            1   5.4125 67.562
+## - Periostin_.ng.mL.          1   5.7055 70.567
+## - FEV1.FVC_PreSalbutamol     1   6.0271 73.692
+## 
+## Step:  AIC=64.07
+## Label ~ Age + IgE_Total_.IU.ml. + eosi0phils_.x10.3.uL. + neutrophils_.x10.3.uL. + 
+##     Periostin_.ng.mL. + Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + 
+##     Pct_Lymphocytes + Allergic_Rhinitis + Atopy + Nasal_Polyps_Diag0sed + 
+##     oral_corticosteroids + AE + wbc + FEV1_Change + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - eosi0phils_.x10.3.uL.      1   5.1268 62.471
+## - IgE_Total_.IU.ml.          1   5.1288 62.493
+## - oral_corticosteroids       1   5.1340 62.550
+## - Atopy                      1   5.1553 62.786
+## - C_Reactive_Protein_.mg.L.  1   5.1645 62.888
+## - Pct_Macrophages            1   5.1717 62.968
+## - Pct_Eosi0phils             1   5.1765 63.020
+## - Nasal_Polyps_Diag0sed      1   5.2021 63.301
+## - AE                         1   5.2050 63.334
+## - neutrophils_.x10.3.uL.     1   5.2143 63.435
+## - Age                        1   5.2620 63.955
+## - Allergic_Rhinitis          1   5.2629 63.964
+## &lt;none&gt;                           5.0906 64.067
+## - Pct_Neutrophils            1   5.3242 64.624
+## - wbc                        1   5.3271 64.655
+## - FEV1_Change                1   5.3320 64.707
+## - Pct_Lymphocytes            1   5.4125 65.562
+## - Periostin_.ng.mL.          1   5.8138 69.639
+## - FEV1.FVC_PreSalbutamol     1   6.0381 71.796
+## 
+## Step:  AIC=62.47
+## Label ~ Age + IgE_Total_.IU.ml. + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + 
+##     Pct_Eosi0phils + Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + 
+##     Allergic_Rhinitis + Atopy + Nasal_Polyps_Diag0sed + oral_corticosteroids + 
+##     AE + wbc + FEV1_Change + FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - IgE_Total_.IU.ml.          1   5.1539 60.771
+## - oral_corticosteroids       1   5.1682 60.929
+## - Atopy                      1   5.1895 61.163
+## - C_Reactive_Protein_.mg.L.  1   5.2052 61.335
+## - Pct_Macrophages            1   5.2089 61.376
+## - Nasal_Polyps_Diag0sed      1   5.2133 61.424
+## - neutrophils_.x10.3.uL.     1   5.2181 61.477
+## - Pct_Eosi0phils             1   5.2184 61.480
+## - AE                         1   5.2374 61.687
+## - Age                        1   5.2799 62.148
+## - Allergic_Rhinitis          1   5.2818 62.168
+## &lt;none&gt;                           5.1268 62.471
+## - wbc                        1   5.3337 62.726
+## - FEV1_Change                1   5.3450 62.846
+## - Pct_Neutrophils            1   5.3644 63.053
+## - Pct_Lymphocytes            1   5.4901 64.373
+## - Periostin_.ng.mL.          1   5.8277 67.775
+## - FEV1.FVC_PreSalbutamol     1   6.0482 69.892
+## 
+## Step:  AIC=60.77
+## Label ~ Age + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Eosi0phils + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Allergic_Rhinitis + 
+##     Atopy + Nasal_Polyps_Diag0sed + oral_corticosteroids + AE + 
+##     wbc + FEV1_Change + FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - oral_corticosteroids       1   5.2047 59.330
+## - C_Reactive_Protein_.mg.L.  1   5.2270 59.573
+## - Pct_Macrophages            1   5.2275 59.579
+## - Pct_Eosi0phils             1   5.2335 59.645
+## - Atopy                      1   5.2417 59.734
+## - Nasal_Polyps_Diag0sed      1   5.2419 59.736
+## - neutrophils_.x10.3.uL.     1   5.2486 59.809
+## - AE                         1   5.2748 60.093
+## - Age                        1   5.3091 60.463
+## - Allergic_Rhinitis          1   5.3325 60.712
+## &lt;none&gt;                           5.1539 60.771
+## - Pct_Neutrophils            1   5.3762 61.178
+## - wbc                        1   5.3790 61.207
+## - FEV1_Change                1   5.3886 61.310
+## - Pct_Lymphocytes            1   5.5682 63.178
+## - Periostin_.ng.mL.          1   5.9342 66.807
+## - FEV1.FVC_PreSalbutamol     1   6.0578 67.981
+## 
+## Step:  AIC=59.33
+## Label ~ Age + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Eosi0phils + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Allergic_Rhinitis + 
+##     Atopy + Nasal_Polyps_Diag0sed + AE + wbc + FEV1_Change + 
+##     FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Atopy                      1   5.2596 57.928
+## - Pct_Macrophages            1   5.2653 57.990
+## - C_Reactive_Protein_.mg.L.  1   5.2754 58.099
+## - neutrophils_.x10.3.uL.     1   5.2842 58.195
+## - Pct_Eosi0phils             1   5.2878 58.233
+## - AE                         1   5.3506 58.905
+## - Allergic_Rhinitis          1   5.3596 59.002
+## - Age                        1   5.3774 59.191
+## &lt;none&gt;                           5.2047 59.330
+## - Nasal_Polyps_Diag0sed      1   5.3910 59.335
+## - Pct_Neutrophils            1   5.4042 59.474
+## - FEV1_Change                1   5.4326 59.773
+## - wbc                        1   5.4557 60.015
+## - Pct_Lymphocytes            1   5.5852 61.352
+## - Periostin_.ng.mL.          1   5.9347 64.811
+## - FEV1.FVC_PreSalbutamol     1   6.1274 66.633
+## 
+## Step:  AIC=57.93
+## Label ~ Age + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Eosi0phils + 
+##     Pct_Neutrophils + Pct_Macrophages + Pct_Lymphocytes + Allergic_Rhinitis + 
+##     Nasal_Polyps_Diag0sed + AE + wbc + FEV1_Change + FEV1.FVC_PreSalbutamol + 
+##     C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Pct_Macrophages            1   5.3321 56.709
+## - neutrophils_.x10.3.uL.     1   5.3343 56.732
+## - C_Reactive_Protein_.mg.L.  1   5.3510 56.910
+## - Pct_Eosi0phils             1   5.3573 56.977
+## - AE                         1   5.4158 57.596
+## - Allergic_Rhinitis          1   5.4468 57.922
+## &lt;none&gt;                           5.2596 57.928
+## - Pct_Neutrophils            1   5.4773 58.240
+## - Nasal_Polyps_Diag0sed      1   5.4819 58.288
+## - wbc                        1   5.4902 58.374
+## - FEV1_Change                1   5.5054 58.532
+## - Age                        1   5.5131 58.611
+## - Pct_Lymphocytes            1   5.6157 59.662
+## - Periostin_.ng.mL.          1   6.0311 63.730
+## - FEV1.FVC_PreSalbutamol     1   6.2551 65.808
+## 
+## Step:  AIC=56.71
+## Label ~ Age + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Eosi0phils + 
+##     Pct_Neutrophils + Pct_Lymphocytes + Allergic_Rhinitis + Nasal_Polyps_Diag0sed + 
+##     AE + wbc + FEV1_Change + FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - Pct_Eosi0phils             1   5.3617 55.024
+## - neutrophils_.x10.3.uL.     1   5.3940 55.366
+## - C_Reactive_Protein_.mg.L.  1   5.4192 55.632
+## &lt;none&gt;                           5.3321 56.709
+## - AE                         1   5.5232 56.716
+## - wbc                        1   5.5338 56.825
+## - Age                        1   5.5478 56.969
+## - Allergic_Rhinitis          1   5.5758 57.256
+## - FEV1_Change                1   5.5867 57.368
+## - Nasal_Polyps_Diag0sed      1   5.6002 57.505
+## - Pct_Lymphocytes            1   5.9794 61.239
+## - Periostin_.ng.mL.          1   6.0445 61.857
+## - FEV1.FVC_PreSalbutamol     1   6.3119 64.324
+## - Pct_Neutrophils            1   7.7685 76.159
+## 
+## Step:  AIC=55.02
+## Label ~ Age + neutrophils_.x10.3.uL. + Periostin_.ng.mL. + Pct_Neutrophils + 
+##     Pct_Lymphocytes + Allergic_Rhinitis + Nasal_Polyps_Diag0sed + 
+##     AE + wbc + FEV1_Change + FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - neutrophils_.x10.3.uL.     1   5.4216 53.657
+## - C_Reactive_Protein_.mg.L.  1   5.4342 53.790
+## - AE                         1   5.5366 54.853
+## &lt;none&gt;                           5.3617 55.024
+## - wbc                        1   5.5807 55.306
+## - Age                        1   5.5826 55.326
+## - Allergic_Rhinitis          1   5.6068 55.572
+## - Nasal_Polyps_Diag0sed      1   5.6232 55.739
+## - FEV1_Change                1   5.8998 58.475
+## - Pct_Lymphocytes            1   5.9864 59.306
+## - Periostin_.ng.mL.          1   6.1141 60.509
+## - FEV1.FVC_PreSalbutamol     1   6.3598 62.755
+## - Pct_Neutrophils            1   7.7766 74.219
+## 
+## Step:  AIC=53.66
+## Label ~ Age + Periostin_.ng.mL. + Pct_Neutrophils + Pct_Lymphocytes + 
+##     Allergic_Rhinitis + Nasal_Polyps_Diag0sed + AE + wbc + FEV1_Change + 
+##     FEV1.FVC_PreSalbutamol + C_Reactive_Protein_.mg.L.
+## 
+##                             Df Deviance    AIC
+## - C_Reactive_Protein_.mg.L.  1   5.4914 52.387
+## - AE                         1   5.5801 53.299
+## &lt;none&gt;                           5.4216 53.657
+## - Age                        1   5.6308 53.815
+## - Nasal_Polyps_Diag0sed      1   5.6727 54.238
+## - Allergic_Rhinitis          1   5.6908 54.420
+## - wbc                        1   5.7508 55.017
+## - Pct_Lymphocytes            1   6.0328 57.746
+## - FEV1_Change                1   6.1331 58.686
+## - Periostin_.ng.mL.          1   6.1689 59.018
+## - FEV1.FVC_PreSalbutamol     1   6.3642 60.794
+## - Pct_Neutrophils            1   7.8251 72.573
+## 
+## Step:  AIC=52.39
+## Label ~ Age + Periostin_.ng.mL. + Pct_Neutrophils + Pct_Lymphocytes + 
+##     Allergic_Rhinitis + Nasal_Polyps_Diag0sed + AE + wbc + FEV1_Change + 
+##     FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - AE                      1   5.6331 51.839
+## - Nasal_Polyps_Diag0sed   1   5.6847 52.359
+## &lt;none&gt;                        5.4914 52.387
+## - Age                     1   5.6932 52.444
+## - Allergic_Rhinitis       1   5.7778 53.284
+## - wbc                     1   5.9222 54.691
+## - FEV1_Change             1   6.2171 57.461
+## - Periostin_.ng.mL.       1   6.2432 57.700
+## - Pct_Lymphocytes         1   6.2565 57.821
+## - FEV1.FVC_PreSalbutamol  1   6.3650 58.801
+## - Pct_Neutrophils         1   8.1254 72.720
+## 
+## Step:  AIC=51.84
+## Label ~ Age + Periostin_.ng.mL. + Pct_Neutrophils + Pct_Lymphocytes + 
+##     Allergic_Rhinitis + Nasal_Polyps_Diag0sed + wbc + FEV1_Change + 
+##     FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Nasal_Polyps_Diag0sed   1   5.7930 51.434
+## &lt;none&gt;                        5.6331 51.839
+## - Age                     1   5.8542 52.033
+## - Allergic_Rhinitis       1   5.9713 53.162
+## - wbc                     1   6.0110 53.540
+## - FEV1_Change             1   6.2472 55.736
+## - Pct_Lymphocytes         1   6.4868 57.882
+## - Periostin_.ng.mL.       1   6.5668 58.581
+## - FEV1.FVC_PreSalbutamol  1   6.6346 59.166
+## - Pct_Neutrophils         1   8.2211 71.387
+## 
+## Step:  AIC=51.43
+## Label ~ Age + Periostin_.ng.mL. + Pct_Neutrophils + Pct_Lymphocytes + 
+##     Allergic_Rhinitis + wbc + FEV1_Change + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## - Age                     1   5.9367 50.831
+## &lt;none&gt;                        5.7930 51.434
+## - Allergic_Rhinitis       1   6.1276 52.635
+## - wbc                     1   6.1648 52.980
+## - FEV1_Change             1   6.3741 54.883
+## - FEV1.FVC_PreSalbutamol  1   6.6748 57.511
+## - Periostin_.ng.mL.       1   6.7315 57.993
+## - Pct_Lymphocytes         1   6.7335 58.010
+## - Pct_Neutrophils         1   8.8486 73.580
+## 
+## Step:  AIC=50.83
+## Label ~ Periostin_.ng.mL. + Pct_Neutrophils + Pct_Lymphocytes + 
+##     Allergic_Rhinitis + wbc + FEV1_Change + FEV1.FVC_PreSalbutamol
+## 
+##                          Df Deviance    AIC
+## &lt;none&gt;                        5.9367 50.831
+## - Allergic_Rhinitis       1   6.2653 51.902
+## - wbc                     1   6.2743 51.984
+## - FEV1_Change             1   6.4671 53.709
+## - FEV1.FVC_PreSalbutamol  1   6.7140 55.844
+## - Periostin_.ng.mL.       1   6.7341 56.015
+## - Pct_Lymphocytes         1   6.7855 56.448
+## - Pct_Neutrophils         1   8.8489 71.582</code></pre>
+<pre class="r"><code>significant_cov = dataTemp[,  colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Label ~ ., data = significant_cov)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.57733  -0.24826  -0.00655   0.18391   0.99321  
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)             4.089500   0.494236   8.274 7.29e-11 ***
+## Periostin_.ng.mL.      -0.009289   0.003620  -2.566   0.0134 *  
+## Pct_Neutrophils        -0.012078   0.002464  -4.903 1.08e-05 ***
+## Pct_Lymphocytes         0.101436   0.038323   2.647   0.0109 *  
+## Allergic_Rhinitis1     -0.171133   0.103908  -1.647   0.1060    
+## wbc                    -0.035473   0.021249  -1.669   0.1014    
+## FEV1_Change            -0.006377   0.003048  -2.092   0.0416 *  
+## FEV1.FVC_PreSalbutamol  0.011752   0.004640   2.533   0.0146 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.1211566)
+## 
+##     Null deviance: 14.2456  on 56  degrees of freedom
+## Residual deviance:  5.9367  on 49  degrees of freedom
+## AIC: 50.831
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+<pre class="r"><code>confIntervals = exp(confint(fitted_model_best))</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre class="r"><code>for(i in 1:dim(dataTemp)[2])
+{
+ print(summary(glm(Label~dataTemp[,i], data = dataTemp))) 
+  print(colnames(dataTemp)[i])
+}</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5667  -0.4444   0.4333   0.4333   0.5556  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     3.44444    0.09721  35.433   &lt;2e-16 ***
+## dataTemp[, i]1  0.12222    0.13400   0.912    0.366    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2551515)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.033  on 55  degrees of freedom
+## AIC: 87.867
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Sex&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.7157  -0.4567   0.1747   0.4935   0.6728  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    4.004687   0.242307  16.527   &lt;2e-16 ***
+## dataTemp[, i] -0.009964   0.004691  -2.124   0.0382 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2393761)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.166  on 55  degrees of freedom
+## AIC: 84.229
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Age&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6990  -0.4698   0.2891   0.4258   0.7716  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    4.13662    0.35349  11.702   &lt;2e-16 ***
+## dataTemp[, i] -0.02241    0.01240  -1.807   0.0762 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2444891)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.447  on 55  degrees of freedom
+## AIC: 85.434
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Body_Mass_Index_.kg.m2.&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5379  -0.5218   0.4639   0.4778   0.6268  
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.5380974  0.0872632  40.545   &lt;2e-16 ***
+## dataTemp[, i] -0.0001556  0.0002950  -0.527      0.6    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2577087)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.174  on 55  degrees of freedom
+## AIC: 88.435
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;IgE_Total_.IU.ml.&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6076  -0.5089   0.3991   0.4584   0.7227  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     3.6076     0.0962  37.500   &lt;2e-16 ***
+## dataTemp[, i]  -0.3301     0.2332  -1.416    0.162    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2499044)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.745  on 55  degrees of freedom
+## AIC: 86.682
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;eosi0phils_.x10.3.uL.&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6866  -0.5055   0.2524   0.4139   1.0010  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.86842    0.17519  22.082   &lt;2e-16 ***
+## dataTemp[, i] -0.08066    0.03652  -2.209   0.0314 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2379113)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.085  on 55  degrees of freedom
+## AIC: 83.879
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;neutrophils_.x10.3.uL.&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6707  -0.5005   0.3277   0.4547   0.6202  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.904145   0.243690  16.021   &lt;2e-16 ***
+## dataTemp[, i] -0.008353   0.004957  -1.685   0.0977 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2462982)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.546  on 55  degrees of freedom
+## AIC: 85.854
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Periostin_.ng.mL.&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5649  -0.5327   0.4351   0.4442   0.5910  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.564868   0.075770  47.048   &lt;2e-16 ***
+## dataTemp[, i] -0.011898   0.007874  -1.511    0.136    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2486871)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.678  on 55  degrees of freedom
+## AIC: 86.404
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Eosi0phils&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.9135  -0.3196  -0.0152   0.3301   0.8244  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    4.161316   0.150467  27.656  &lt; 2e-16 ***
+## dataTemp[, i] -0.013247   0.002827  -4.686 1.87e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.1851106)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 10.181  on 55  degrees of freedom
+## AIC: 69.575
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Neutrophils&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.94287  -0.27994  -0.03686   0.33082   0.76118  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2.907023   0.131213  22.155  &lt; 2e-16 ***
+## dataTemp[, i] 0.013482   0.002662   5.064 4.92e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.1766385)
+## 
+##     Null deviance: 14.2456  on 56  degrees of freedom
+## Residual deviance:  9.7151  on 55  degrees of freedom
+## AIC: 66.905
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Macrophages&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.66231  -0.46423   0.06447   0.49967   0.63823  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.34421    0.10907  30.660   &lt;2e-16 ***
+## dataTemp[, i]  0.09758    0.05179   1.884   0.0648 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2433069)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.382  on 55  degrees of freedom
+## AIC: 85.157
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Lymphocytes&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6600  -0.4960   0.3207   0.5040   0.5040  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.49599    0.07068  49.462   &lt;2e-16 ***
+## dataTemp[, i]  0.48249    0.82665   0.584    0.562    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2574167)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.158  on 55  degrees of freedom
+## AIC: 88.371
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Mast_cells&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5184  -0.5076   0.4789   0.4923   0.4945  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   3.5047884  0.1048787   33.42   &lt;2e-16 ***
+## dataTemp[, i] 0.0001056  0.0021294    0.05    0.961    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2589996)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.245  on 55  degrees of freedom
+## AIC: 88.72
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Fe0&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6923  -0.4546   0.3077   0.5454   0.5454  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     3.45455    0.07518   45.95   &lt;2e-16 ***
+## dataTemp[, i]1  0.23776    0.15743    1.51    0.137    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2486968)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.678  on 55  degrees of freedom
+## AIC: 86.406
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Eczema_Diag0sed&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5909  -0.4571   0.4091   0.5429   0.5429  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     3.45714    0.08529  40.533   &lt;2e-16 ***
+## dataTemp[, i]1  0.13377    0.13729   0.974    0.334    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2546163)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.004  on 55  degrees of freedom
+## AIC: 87.747
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Allergic_Rhinitis&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5116  -0.5116   0.4884   0.4884   0.5000  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     3.50000    0.13601  25.733   &lt;2e-16 ***
+## dataTemp[, i]1  0.01163    0.15659   0.074    0.941    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2589852)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.244  on 55  degrees of freedom
+## AIC: 88.717
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Atopy&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5217  -0.5217   0.4783   0.4783   0.5454  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     3.52174    0.07493  46.999   &lt;2e-16 ***
+## dataTemp[, i]1 -0.06719    0.17057  -0.394    0.695    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2582824)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.206  on 55  degrees of freedom
+## AIC: 88.562
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Sinusitis_Diag0sed&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5714  -0.5714   0.4286   0.4286   0.6667  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     3.57143    0.07678  46.513   &lt;2e-16 ***
+## dataTemp[, i]1 -0.23810    0.14968  -1.591    0.117    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.247619)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.619  on 55  degrees of freedom
+## AIC: 86.159
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Nasal_Polyps_Diag0sed&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5714  -0.5714   0.4286   0.4286   0.6667  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     3.57143    0.07678  46.513   &lt;2e-16 ***
+## dataTemp[, i]1 -0.23810    0.14968  -1.591    0.117    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.247619)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.619  on 55  degrees of freedom
+## AIC: 86.159
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;oral_corticosteroids&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5982  -0.4983   0.3685   0.5017   0.5184  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.48160    0.08733  39.865   &lt;2e-16 ***
+## dataTemp[, i]  0.01665    0.03414   0.488    0.628    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2578958)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.184  on 55  degrees of freedom
+## AIC: 88.477
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;AE&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6951  -0.4530   0.1910   0.4068   0.9914  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    4.04403    0.22004  18.379   &lt;2e-16 ***
+## dataTemp[, i] -0.07122    0.02802  -2.542   0.0139 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2317873)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 12.748  on 55  degrees of freedom
+## AIC: 82.393
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;wbc&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.83897  -0.38002   0.00349   0.41124   0.70111  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2.707842   0.233189  11.612  &lt; 2e-16 ***
+## dataTemp[, i] 0.010688   0.003004   3.558 0.000779 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2105568)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 11.581  on 55  degrees of freedom
+## AIC: 76.917
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;FEV1_Pct_.L.&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6889  -0.5060   0.3733   0.4556   0.5716  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.632750   0.095324  38.110   &lt;2e-16 ***
+## dataTemp[, i] -0.006921   0.003864  -1.791   0.0788 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2447407)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.461  on 55  degrees of freedom
+## AIC: 85.492
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;FEV1_Change&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.7252  -0.4593   0.1824   0.4774   0.6550  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    2.84844    0.35855   7.944 1.07e-10 ***
+## dataTemp[, i]  0.00678    0.00362   1.873   0.0664 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2434804)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.391  on 55  degrees of freedom
+## AIC: 85.198
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;FVC_Pct_.L.&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.78190  -0.40696   0.07664   0.40410   0.77358  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2.261193   0.329685   6.859 6.43e-09 ***
+## dataTemp[, i] 0.020090   0.005221   3.848 0.000312 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2040696)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 11.224  on 55  degrees of freedom
+## AIC: 75.133
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;FEV1.FVC_PreSalbutamol&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5415  -0.5202   0.4569   0.4662   0.7102  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.545772   0.082425  43.018   &lt;2e-16 ***
+## dataTemp[, i] -0.008533   0.011057  -0.772    0.444    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2562364)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.093  on 55  degrees of freedom
+## AIC: 88.109
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;C_Reactive_Protein_.mg.L.&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##       Min         1Q     Median         3Q        Max  
+## 0.000e+00  0.000e+00  0.000e+00  4.441e-16  4.441e-16  
+## 
+## Coefficients:
+##                 Estimate Std. Error    t value Pr(&gt;|t|)    
+## (Intercept)   -3.294e-15  2.975e-16 -1.107e+01 1.29e-15 ***
+## dataTemp[, i]  1.000e+00  8.395e-17  1.191e+16  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.004005e-31)
+## 
+##     Null deviance: 1.4246e+01  on 56  degrees of freedom
+## Residual deviance: 5.5220e-30  on 55  degrees of freedom
+## AIC: -3902.7
+## 
+## Number of Fisher Scoring iterations: 1
+## 
+## [1] &quot;Label&quot;</code></pre>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

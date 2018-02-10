@@ -1,0 +1,43 @@
+---
+title: "Step1-FindtheNumberOfClustersForMansoor"
+author: "Nazanin Zounemat Kermani"
+date: "January 27, 2018"
+output: html_document
+---
+
+```{r}
+
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",                        header = TRUE))
+dataScaled = scale(data)
+```
+```{r}
+library(factoextra)
+Methods= c("silhouette", "wss","gap_stat")
+Clustering.method = c(kmeans, hcut,cluster::pam)
+HClustMEthods = c("ward.D","ward.D2","single","complete","average")
+
+
+pdf("C:/Users/nz1413/Desktop/AnalysisTag/Final/data/numberofClusters.pdf")
+set.seed(123)
+
+for(emethod in Methods)
+{
+  # for average silhouette width
+print(fviz_nbclust(dataScaled, FUNcluster = kmeans, nstart=25,  method = emethod,  print.summary = TRUE)+labs(subtitle=paste('kmeans', linkageFunc, sep=" ")))
+}
+
+for(emethod in Methods)
+{
+  # for average silhouette width
+print(fviz_nbclust(dataScaled, FUNcluster = cluster::pam,  method = emethod,  print.summary = TRUE)+labs(subtitle=paste('pam clustering', linkageFunc, sep=" ")))
+}
+
+for(linkageFunc in  HClustMEthods)
+for(emethod in Methods)
+{
+  # for average silhouette width
+print(fviz_nbclust(dataScaled, FUNcluster = hcut,  method = emethod,  print.summary = TRUE,  hc_method = linkageFunc)+labs(subtitle=paste('hierarchical clustering', linkageFunc, sep=" ")))
+}
+
+dev.off()
+```

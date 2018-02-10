@@ -1,0 +1,91 @@
+---
+title: "step6-regression"
+author: "Nazanin Zounemat Kermani"
+date: "February 2, 2018"
+output: html_document
+---
+Between Four Classes
+```{r}
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData<-readImputateClinicalData()
+
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp<-CleanData(clinicalData)
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/checkCollinearity.R')
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)
+# retrieve confidence intervals
+confIntervals = exp(confint(fitted_model))
+
+backward_model = step(fitted_model,  direction="backward", trace=1)
+
+significant_cov = dataTemp[, colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)
+confIntervals = exp(confint(fitted_model_best))
+
+
+```
+between 3 classes
+
+```{r}
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData<-readImputateClinicalData()
+
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp<-CleanData(clinicalData)
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/checkCollinearity.R')
+dataTemp$Label[which(dataTemp$Label>2)]=3
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)
+# retrieve confidence intervals
+confIntervals = exp(confint(fitted_model))
+
+backward_model = step(fitted_model,  direction="backward", trace=1)
+
+significant_cov = dataTemp[, colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)
+confIntervals = exp(confint(fitted_model_best))
+
+```
+
+between tac3a and tac3b classes
+
+```{r}
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData<-readImputateClinicalData()
+
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp<-CleanData(clinicalData)
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/checkCollinearity.R')
+indStay = which(dataTemp$Label>2)
+dataTemp = dataTemp[indStay,]
+
+fitted_model = glm(Label~., data = dataTemp)
+summary(fitted_model)
+# retrieve confidence intervals
+confIntervals = exp(confint(fitted_model))
+
+backward_model = step(fitted_model,  direction="backward", trace=1)
+
+significant_cov = dataTemp[,  colnames(backward_model$model)]
+fitted_model_best = glm(Label~., data=significant_cov)
+summary(fitted_model_best)
+confIntervals = exp(confint(fitted_model_best))
+
+```
+
+```{r}
+for(i in 1:dim(dataTemp)[2])
+{
+  print(summary(glm(Label~dataTemp[,i], data = dataTemp))) 
+  print(colnames(dataTemp)[i])
+  temp <- glm(Label~dataTemp[,i], data = dataTemp)
+  print(exp(confint(temp)))
+  print('-----------------------------------------')
+}
+```

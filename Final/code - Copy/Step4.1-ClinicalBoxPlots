@@ -1,0 +1,99 @@
+---
+
+title: "finalBoxplots"
+author: "Nazanin Zounemat Kermani"
+date: "January 27, 2018"
+output: html_document
+---
+
+Tac3a and Tac3b
+```{r}
+levels(imputatedClinicalData3ab$Label) = c("TAC3a","TAC3b")
+
+pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot2.pdf')
+imputatedClinicalData3ab$Label = factor(imputatedClinicalData3ab$Label)
+require(ggplot2)
+i=1
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+i=4
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p
+  i=7
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+  
+    i=10
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+    i=13
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+    i=16
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+    i=19
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+    i=22
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+    i=25
+  df.m <- melt(imputatedClinicalData3ab[,c(i:(i+1),28)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+dev.off()
+```

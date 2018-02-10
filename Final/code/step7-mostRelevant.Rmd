@@ -1,0 +1,83 @@
+---
+title: "step7-mostRelevant"
+author: "Nazanin Zounemat Kermani"
+date: "February 3, 2018"
+output: html_document
+---
+
+c("FEV1.FVC_PreSalbutamol", "FEV1_Pct_.L.","wbc","Pct_Macrophages","Pct_Neutrophils",
+"neutrophils_.x10.3.uL.","Age")
+
+```{r}
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+dataScaled = scale(data)
+
+
+library(mclust)
+mc<-Mclust(dataScaled)
+```
+```{r}
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/getPatiens.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData<-readImputateClinicalData()
+
+source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp<-CleanData(clinicalData)
+```
+
+```{r}
+ind34 = which(mc$classification>2)
+dataScaled3ab = dataScaled[ind34,]
+Label = factor(mc$classification[ind34])
+levels(Label) = c("TAC3a","TAC3b")
+temp = order(Label)
+dataScaled3ab = dataScaled3ab[temp,]
+
+patients = getPatiens()
+indPateint = match(patients , rownames(dataScaled3ab))
+indPateint = indPateint[!is.na(indPateint)]
+dataTemp = dataTemp[indPateint,]
+
+load("test.Rdata")
+Allimportance= rowSums(FoldChangeSelectionresult2classDistinctionBenferoni[,2:14])
+rank =order(Allimportance, decreasing = TRUE)
+
+library(circlize)
+library(ComplexHeatmap)
+annotDf <- data.frame(Macrophages = dataTemp$Pct_Macrophages, FEV1 = dataTemp$FEV1_Pct_.L. , Neutrophils=  dataTemp$Pct_Neutrophils)
+col = list(Macrophages = circlize::colorRamp2(c(1,90), c("lightblue", "purple")),
+       FEV1= circlize::colorRamp2(c(18,121), c("green", "darkred")),   
+       Neutrophils= circlize::colorRamp2(c(8,97), c("yellow", "orange")))
+ha = HeatmapAnnotation(annotDf, col=col)
+print(Heatmap(t(dataScaled3ab[, rank[1:132]]), name = "Asthma phenotyping",
+        top_annotation = ha))
+
+library(RColorBrewer)
+col <- colorRampPalette(brewer.pal(10,"RdYlBu"))(256)
+heatmap(dataScaled3ab[, rank[1:132]], scale = "none", col = col,
+RowSideColors = rep(c("blue", "pink"), ftable(Label)) )
+
+
+
+fitted_model = glm(Label~., data = clinicalData[ind34,])
+summary(fitted_model)
+
+
+backward_model = step(fitted_model,  direction="backward", trace=1)
+
+significant_cov = as.matrix(clinicalData[ind34, colnames(backward_model$model)])
+
+library(RColorBrewer)
+col <- colorRampPalette(brewer.pal(10,"RdYlBu"))(256)
+heatmap(t(cbind(significant_cov, dataScaled3ab[, rank[1:130]])), scale = "none", col = col,
+ColSideColors = rep(c("blue", "pink"), ftable(Label)) )
+
+modeled<-dataTemp$Periostin_.ng.mL. + dataTemp$Pct_Neutrophils + dataTemp$Pct_Lymphocytes  + dataTemp$wbc + dataTemp$FEV1_Change + dataTemp$FEV1.FVC_PreSalbutamol
+
+f <- colorRamp(c("white", "blue"))
+(colors <- rgb(f((modeled)/max(modeled))/255))
+
+heatmap(dataScaled3ab[, rank[1:300]], scale = "none", col = col,
+RowSideColors = colors) 
+```

@@ -1,0 +1,121 @@
+---
+title: "TACv2"
+author: "Nazanin Zounemat Kermani"
+date: "January 24, 2018"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Find the optimal number of clusters
+
+This the R notebook to find the optimal number of clusters in the data set.
+visual inspection of heatmap of the similarity matrix in the main reference paper suggests that the largest cluster includes subclusters. In this section of the report 3 methods were studied. The underlying rational behind employing several measurements and methods to determine the number of clusters is two fold. firstly, there is not single method that find the optimal number of clusters in the data set. The reason is that the number of clusters is highly subjective and governed by the similarity measurement and the clustering methods' parameters. five methods were used to find the optimal number of clusters. Gap statisitics, (more info if stayed in the analysis), WSS and silhouette, Gaussian model based, progency.  
+
+Read the data and check for outliers:
+````{r , echo = FALSE}
+
+dataSafety<-function(data)
+{
+  plot_colors <- c('black',"blue","red")
+  Genemaen = colMeans(data)
+  GeneMax <- function(data) apply(data,2, max, na.rm = TRUE)
+  GeneMin <- function(data) apply(data,2, min, na.rm = TRUE)
+  gemeMax = GeneMax(data)
+  gemeMin = GeneMin(data)
+  plot(gemeMin, ylim = c(min(gemeMin), max(gemeMax)+3),  col =plot_colors[1],pch=1, ylab='Gene expression')
+  points(Genemaen, col =plot_colors[2],pch=1)
+  points(gemeMax, col =plot_colors[3],pch=1)
+  legend('topright', c('min','means','max'), cex=0.8, col=plot_colors,pch=1);
+}
+```
+
+```{r}
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",                        header = TRUE))
+dataSafety(data)
+dataScaled = scale(data)
+dataSafety(dataScaled)
+```
+
+Plot the data before any furthur analysis to inspect the clustering tendency. 
+
+```{r, warning=FALSE}
+TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+inds = match(TAClabels[2,], rownames(data))
+tacLabels <- as.numeric(TAClabels[1,])
+
+myLabel3 <-mbc$classification
+myLabel3[which(myLabel3==3)]<-5
+myLabel3[which(myLabel3==2) ]<-3
+myLabel3[which(myLabel3==4) ]<-3
+myLabel3[which(myLabel3==5)]<-2
+
+myLabel4 <-mbc$classification
+myLabel4[which(myLabel3==3)]<-5
+myLabel4[which(myLabel3==2) ]<-3
+myLabel4[which(myLabel3==4) ]<-4
+myLabel4[which(myLabel3==5)]<-2
+
+library(ggfortify)
+
+TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+inds = as.integer(sapply(rownames(data) , function(x) which(x == TAClabels[2,])))
+autoplot(prcomp(dataScaled), data = dataScaled, colour = TAClabels[1,inds], legendLabs = levels(factor(TAClabels[1,inds])),  title = "PCA plot, color coded based on TAC1:3")
+```
+
+
+## WSS(elbow), silhouette and gap
+
+
+## model-based clustering
+
+My personal choise if the EM based model. This model:
+```{r}
+library(mclust)
+mbc<-Mclust(dataScaled)
+summary(mbc)
+```
+## visualization 
+ high uncertainity A_449, A_207
+```{r}
+library(factoextra)
+# BIC value for choosing the number of clusters 
+temp  = factor(mbc$classification)
+levels(temp)=c("TAC1", "TAC2", "TAC3a", "TAC3b")
+mbc$classification = temp
+
+
+fviz_mclust(mbc, "BIC", pallette = "jco")
+
+#Classification plot
+
+print(fviz_mclust(mbc, "classification", geom="point", 
+            pointsize= 3.5, palette = "jco"))
+
+#classification uncertainity
+fviz_mclust(mbc, "uncertainty", 
+            palette = "jco")
+
+
+png(filename = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/code/step1Images/BIC.png')
+fviz_mclust(mbc, "BIC", pallette = "jco")
+dev.off()
+#Classification plot
+png(filename = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/code/step1Images/classification.png')
+print(fviz_mclust(mbc, "classification", geom="point", 
+            pointsize= 3.5, palette = "jco"))
+dev.off()
+#classification uncertainity
+png(filename = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/code/step1Images/uncertainity.png')
+mbc$uncertainty = mbc$uncertainty*1000000
+fviz_mclust(mbc, "uncertainty", 
+            palette = "jco")
+dev.off()
+```
+

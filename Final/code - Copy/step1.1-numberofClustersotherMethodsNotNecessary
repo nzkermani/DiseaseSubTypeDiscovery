@@ -1,0 +1,31 @@
+---
+title: "NumberOfClusters"
+author: "Nazanin Zounemat Kermani"
+date: "January 25, 2018"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",                        header = TRUE))
+dataScaled = scale(data)
+```
+```{r}
+library(factoextra)
+# for average silhouette width
+fviz_nbclust(dataScaled, kmeans, nstart=25,  method = "silhouette")+
+  geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(dataScaled, cluster::pam, method = "silhouette")+
+  geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(dataScaled, hcut, method = "silhouette")+
+  geom_vline(xintercept = 4, linetype = 2)
+
+# for gap statistics
+fviz_nbclust(dataScaled, kmeans,nstart=25, method = "gap_stat")+
+  geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(dataScaled, cluster::pam, method = "gap_stat")+
+  geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(dataScaled, hcut, method = "gap_stat")+
+  geom_vline(xintercept = 4, linetype = 2)
+```

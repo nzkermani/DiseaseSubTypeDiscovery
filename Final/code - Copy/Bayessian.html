@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Nazanin Zounemat Kermani" />
+
+
+<title>regression</title>
+
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fjquery%2D1%2E11%2E3%2Fjquery%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fcss%2Fbootstrap%2Emin%2Ecss%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A" rel="stylesheet" />
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fjs%2Fbootstrap%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fshim%2Fhtml5shiv%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fshim%2Frespond%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fnavigation%2D1%2E1%2Ftabsets%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<link href="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fhighlightjs%2Fdefault%2Ecss%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A" rel="stylesheet" />
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fhighlightjs%2Fhighlight%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type="text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">regression</h1>
+<h4 class="author"><em>Nazanin Zounemat Kermani</em></h4>
+<h4 class="date"><em>February 7, 2018</em></h4>
+
+</div>
+
+
+<pre class="r"><code>source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/readImputateClinicalData.R')
+setwd('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/')
+clinicalData&lt;-readImputateClinicalData()</code></pre>
+<pre><code>## Package 'mclust' version 5.4
+## Type 'citation(&quot;mclust&quot;)' for citing this R package in publications.</code></pre>
+<pre><code>## Loading required package: randomForest</code></pre>
+<pre><code>## randomForest 4.6-12</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## Loading required package: foreach</code></pre>
+<pre><code>## Loading required package: itertools</code></pre>
+<pre><code>## Loading required package: iterators</code></pre>
+<pre><code>##   missForest iteration 1 in progress...done!
+##     estimated error(s): 0.9618635 
+##     difference(s): 0.001545505 
+##     time: 17.32 seconds
+## 
+##   missForest iteration 2 in progress...done!
+##     estimated error(s): 0.9612661 
+##     difference(s): 3.278118e-05 
+##     time: 17 seconds
+## 
+##   missForest iteration 3 in progress...done!
+##     estimated error(s): 0.9626408 
+##     difference(s): 2.878008e-05 
+##     time: 16.83 seconds
+## 
+##   missForest iteration 4 in progress...done!
+##     estimated error(s): 0.961726 
+##     difference(s): 5.929313e-05 
+##     time: 16.9 seconds</code></pre>
+<pre class="r"><code>source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/functions/CleanData.R')
+dataTemp&lt;-CleanData(clinicalData)
+indStay = which(dataTemp$Label&gt;2)
+dataTemp = dataTemp[indStay,]
+dataTemp$Label = dataTemp$Label -3
+for(i in 1:(dim(dataTemp)[2]-1))
+{ print('--------------------')
+  print(summary(glm(Label~dataTemp[,i], data = dataTemp))) 
+  print(colnames(dataTemp)[i])
+  temp &lt;- glm(Label~dataTemp[,i], data = dataTemp)
+  print(exp(cbind(coef(temp), confint(temp))) )
+  print('-----------------------------------------')
+}</code></pre>
+<pre><code>## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5667  -0.4444   0.4333   0.4333   0.5556  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     0.44444    0.09721   4.572 2.78e-05 ***
+## dataTemp[, i]1  0.12222    0.13400   0.912    0.366    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2551515)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.033  on 55  degrees of freedom
+## AIC: 87.867
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Sex&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                            2.5 %   97.5 %
+## (Intercept)    1.559623 1.289060 1.886976
+## dataTemp[, i]1 1.130005 0.869005 1.469395
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.7157  -0.4567   0.1747   0.4935   0.6728  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    1.004687   0.242307   4.146 0.000118 ***
+## dataTemp[, i] -0.009964   0.004691  -2.124 0.038180 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2393761)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.166  on 55  degrees of freedom
+## AIC: 84.229
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Age&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %    97.5 %
+## (Intercept)   2.7310516 1.6985494 4.3911840
+## dataTemp[, i] 0.9900857 0.9810244 0.9992307
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6990  -0.4698   0.2891   0.4258   0.7716  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)    1.13662    0.35349   3.215  0.00218 **
+## dataTemp[, i] -0.02241    0.01240  -1.807  0.07616 . 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2444891)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.447  on 55  degrees of freedom
+## AIC: 85.434
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Body_Mass_Index_.kg.m2.&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)   3.1162115 1.5586165 6.230381
+## dataTemp[, i] 0.9778414 0.9543676 1.001893
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5394  -0.5224   0.4626   0.4771   0.6338  
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.5395606  0.0872075   6.187 8.01e-08 ***
+## dataTemp[, i] -0.0001636  0.0002952  -0.554    0.582    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2575728)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.167  on 55  degrees of freedom
+## AIC: 88.405
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;IgE_Total_.IU.ml.&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)   1.7152530 1.4457628 2.034976
+## dataTemp[, i] 0.9998364 0.9992582 1.000415
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6077  -0.5089   0.3989   0.4584   0.7231  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.60774    0.09619   6.318  4.9e-08 ***
+## dataTemp[, i] -0.33071    0.23315  -1.418    0.162    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2498706)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.743  on 55  degrees of freedom
+## AIC: 86.675
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;eosi0phils_.x10.3.uL.&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)   1.8362738 1.5207705 2.217232
+## dataTemp[, i] 0.7184137 0.4549002 1.134575
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6868  -0.5053   0.2521   0.4139   1.0022  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.86901    0.17510   4.963 7.06e-06 ***
+## dataTemp[, i] -0.08082    0.03651  -2.214    0.031 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2378247)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.080  on 55  degrees of freedom
+## AIC: 83.858
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;neutrophils_.x10.3.uL.&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %    97.5 %
+## (Intercept)   2.3845603 1.6918634 3.3608671
+## dataTemp[, i] 0.9223593 0.8586591 0.9907851
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6705  -0.5007   0.3279   0.4554   0.6198  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.903485   0.243570   3.709 0.000485 ***
+## dataTemp[, i] -0.008335   0.004953  -1.683 0.098046 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2463256)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.548  on 55  degrees of freedom
+## AIC: 85.86
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Periostin_.ng.mL.&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                           2.5 %   97.5 %
+## (Intercept)   2.4681905 1.53127 3.978373
+## dataTemp[, i] 0.9916996 0.98212 1.001373
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5649  -0.5327   0.4351   0.4442   0.5910  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.564868   0.075770   7.455 6.78e-10 ***
+## dataTemp[, i] -0.011898   0.007874  -1.511    0.136    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2486871)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.678  on 55  degrees of freedom
+## AIC: 86.404
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Eosi0phils&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                            2.5 %   97.5 %
+## (Intercept)   1.759216 1.5164338 2.040867
+## dataTemp[, i] 0.988172 0.9730383 1.003541
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.9135  -0.3196  -0.0152   0.3301   0.8244  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    1.161316   0.150467   7.718 2.52e-10 ***
+## dataTemp[, i] -0.013247   0.002827  -4.686 1.87e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.1851106)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 10.181  on 55  degrees of freedom
+## AIC: 69.575
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Neutrophils&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %    97.5 %
+## (Intercept)   3.1941338 2.3783472 4.2897399
+## dataTemp[, i] 0.9868405 0.9813878 0.9923236
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.94287  -0.27994  -0.03686   0.33082   0.76118  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -0.092977   0.131213  -0.709    0.482    
+## dataTemp[, i]  0.013482   0.002662   5.064 4.92e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.1766385)
+## 
+##     Null deviance: 14.2456  on 56  degrees of freedom
+## Residual deviance:  9.7151  on 55  degrees of freedom
+## AIC: 66.905
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Macrophages&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)   0.9112145 0.7045827 1.178445
+## dataTemp[, i] 1.0135736 1.0082988 1.018876
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.66231  -0.46423   0.06447   0.49967   0.63823  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)    0.34421    0.10907   3.156   0.0026 **
+## dataTemp[, i]  0.09758    0.05179   1.884   0.0648 . 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2433069)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.382  on 55  degrees of freedom
+## AIC: 85.157
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Lymphocytes&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                            2.5 %   97.5 %
+## (Intercept)   1.410871 1.1393141 1.747155
+## dataTemp[, i] 1.102497 0.9960809 1.220283
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6600  -0.4960   0.3207   0.5040   0.5040  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.49599    0.07068   7.017 3.53e-09 ***
+## dataTemp[, i]  0.48249    0.82665   0.584    0.562    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2574167)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.158  on 55  degrees of freedom
+## AIC: 88.371
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Pct_Mast_cells&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                            2.5 %   97.5 %
+## (Intercept)   1.642123 1.4296934 1.886117
+## dataTemp[, i] 1.620109 0.3205521 8.188225
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5183  -0.5077   0.4790   0.4923   0.4945  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   0.5048214  0.1048750   4.814  1.2e-05 ***
+## dataTemp[, i] 0.0001047  0.0021293   0.049    0.961    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2589998)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.245  on 55  degrees of freedom
+## AIC: 88.72
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Fe0&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                            2.5 %   97.5 %
+## (Intercept)   1.656690 1.3488740 2.034749
+## dataTemp[, i] 1.000105 0.9959396 1.004287
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6923  -0.4546   0.3077   0.5454   0.5454  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     0.45455    0.07518   6.046 1.36e-07 ***
+## dataTemp[, i]1  0.23776    0.15743   1.510    0.137    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2486968)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.678  on 55  degrees of freedom
+## AIC: 86.406
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Eczema_Diag0sed&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)    1.575457 1.3596036 1.825580
+## dataTemp[, i]1 1.268408 0.9316616 1.726869
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5909  -0.4571   0.4091   0.5429   0.5429  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     0.45714    0.08529   5.360  1.7e-06 ***
+## dataTemp[, i]1  0.13377    0.13729   0.974    0.334    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2546163)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.004  on 55  degrees of freedom
+## AIC: 87.747
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Allergic_Rhinitis&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)    1.579555 1.3363918 1.866962
+## dataTemp[, i]1 1.143126 0.8734408 1.496079
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5116  -0.5116   0.4884   0.4884   0.5000  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     0.50000    0.13601   3.676 0.000539 ***
+## dataTemp[, i]1  0.01163    0.15659   0.074 0.941077    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2589852)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.244  on 55  degrees of freedom
+## AIC: 88.717
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Atopy&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)    1.648721 1.2629165 2.152385
+## dataTemp[, i]1 1.011696 0.7443144 1.375129
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5217  -0.5217   0.4783   0.4783   0.5454  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     0.52174    0.07493   6.963 4.34e-09 ***
+## dataTemp[, i]1 -0.06719    0.17057  -0.394    0.695    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2582824)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.206  on 55  degrees of freedom
+## AIC: 88.562
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Sinusitis_Diag0sed&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                              2.5 %   97.5 %
+## (Intercept)    1.6849555 1.4548091 1.951510
+## dataTemp[, i]1 0.9350141 0.6693086 1.306201
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5714  -0.5714   0.4286   0.4286   0.6667  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     0.57143    0.07678   7.442 7.12e-10 ***
+## dataTemp[, i]1 -0.23810    0.14968  -1.591    0.117    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.247619)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.619  on 55  degrees of freedom
+## AIC: 86.159
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;Nasal_Polyps_Diag0sed&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                              2.5 %   97.5 %
+## (Intercept)    1.7707950 1.5233866 2.058384
+## dataTemp[, i]1 0.7881276 0.5877465 1.056825
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5714  -0.5714   0.4286   0.4286   0.6667  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     0.57143    0.07678   7.442 7.12e-10 ***
+## dataTemp[, i]1 -0.23810    0.14968  -1.591    0.117    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.247619)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.619  on 55  degrees of freedom
+## AIC: 86.159
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;oral_corticosteroids&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                              2.5 %   97.5 %
+## (Intercept)    1.7707950 1.5233866 2.058384
+## dataTemp[, i]1 0.7881276 0.5877465 1.056825
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5982  -0.4983   0.3685   0.5017   0.5184  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.48160    0.08733   5.515 9.65e-07 ***
+## dataTemp[, i]  0.01665    0.03414   0.488    0.628    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2578958)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.184  on 55  degrees of freedom
+## AIC: 88.477
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;AE&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                           2.5 %   97.5 %
+## (Intercept)   1.61867 1.3640154 1.920867
+## dataTemp[, i] 1.01679 0.9509793 1.087155
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6954  -0.4527   0.1905   0.4067   0.9926  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    1.04506    0.21990   4.752 1.49e-05 ***
+## dataTemp[, i] -0.07137    0.02801  -2.548   0.0137 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2316607)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 12.741  on 55  degrees of freedom
+## AIC: 82.362
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;wbc&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %    97.5 %
+## (Intercept)   2.8435682 1.8479273 4.3756485
+## dataTemp[, i] 0.9311218 0.8813894 0.9836603
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.83897  -0.38002   0.00349   0.41124   0.70111  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -0.292158   0.233189  -1.253 0.215550    
+## dataTemp[, i]  0.010688   0.003004   3.558 0.000779 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2105568)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 11.581  on 55  degrees of freedom
+## AIC: 76.917
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;FEV1_Pct_.L.&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)   0.7466508 0.4727451 1.179256
+## dataTemp[, i] 1.0107454 1.0048114 1.016715
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6889  -0.5060   0.3733   0.4556   0.5716  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.632750   0.095324   6.638 1.48e-08 ***
+## dataTemp[, i] -0.006921   0.003864  -1.791   0.0788 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2447407)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.461  on 55  degrees of freedom
+## AIC: 85.492
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;FEV1_Change&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)   1.8827817 1.5619256 2.269549
+## dataTemp[, i] 0.9931034 0.9856097 1.000654
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.7252  -0.4593   0.1824   0.4774   0.6550  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)   -0.15156    0.35855  -0.423   0.6742  
+## dataTemp[, i]  0.00678    0.00362   1.873   0.0664 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2434804)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 13.391  on 55  degrees of freedom
+## AIC: 85.198
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;FVC_Pct_.L.&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)   0.8593693 0.4255792 1.735319
+## dataTemp[, i] 1.0068028 0.9996854 1.013971
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.78190  -0.40696   0.07664   0.40410   0.77358  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -0.738807   0.329685  -2.241 0.029086 *  
+## dataTemp[, i]  0.020090   0.005221   3.848 0.000312 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2040696)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 11.224  on 55  degrees of freedom
+## AIC: 75.133
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;FEV1.FVC_PreSalbutamol&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %    97.5 %
+## (Intercept)   0.4776832 0.2503295 0.9115237
+## dataTemp[, i] 1.0202933 1.0099062 1.0307872
+## [1] &quot;-----------------------------------------&quot;
+## [1] &quot;--------------------&quot;
+## 
+## Call:
+## glm(formula = Label ~ dataTemp[, i], data = dataTemp)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5420  -0.5203   0.4564   0.4658   0.7140  
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.546320   0.082373   6.632 1.51e-08 ***
+## dataTemp[, i] -0.008676   0.011061  -0.784    0.436    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.2561458)
+## 
+##     Null deviance: 14.246  on 56  degrees of freedom
+## Residual deviance: 14.088  on 55  degrees of freedom
+## AIC: 88.089
+## 
+## Number of Fisher Scoring iterations: 2
+## 
+## [1] &quot;C_Reactive_Protein_.mg.L.&quot;</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                             2.5 %   97.5 %
+## (Intercept)   1.7268862 1.4694269 2.029455
+## dataTemp[, i] 0.9913612 0.9700999 1.013088
+## [1] &quot;-----------------------------------------&quot;</code></pre>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

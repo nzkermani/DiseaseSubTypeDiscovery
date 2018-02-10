@@ -1,0 +1,92 @@
+---
+title: "plotGeneExpressions"
+author: "Nazanin Zounemat Kermani"
+date: "January 28, 2018"
+output: html_document
+---
+```{r}
+# 1- read gene expression data
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+# 2- scale gene expression data(zere mean, one variance)
+dataScaled = scale(data)
+
+# 3- read clinical data
+TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+
+# 3-order the patients' gene expression data in the same way as the clincal data
+inds = match(TAClabels[2,], rownames(data))
+tacLabels <- as.numeric(TAClabels[1,])
+dataScaled = dataScaled[inds,]
+
+# 4- apply clustering 
+library(mclust)
+mbc<-Mclust(dataScaled)
+# 5- read the clustgering labels (TAC1 , TAC2, TAC3a, TAC3b)
+temp  = factor(mbc$classification)
+#6 - clusters 2 and 4 are TAC3a|b
+indTAC3 = c(which(mbc$classification==2) ,  which(mbc$classification==4))
+levels(temp)=c("TAC1", "TAC3a", "TAC2", "TAC3b")
+mbc$classification = temp
+
+# 7- exclude any patient who is not TAC3a and TAC3b 
+dataScaled3ab  =  dataScaled[indTAC3,]
+labelTAC3 =  mbc$classification[indTAC3]
+Label = labelTAC3
+temp = order(Label)
+# 8- put TAC3a patients together and put TAC3b patients together
+dataScaled3ab = dataScaled3ab[temp,]
+labelTAC3 = factor(labelTAC3[temp])
+
+```
+
+```{r}
+# 8- read the result of gene selection (13 methods (first 13 columns, last column is fold change))
+FoldChangeSelectionresult2classDistinctionBenferoni = read.csv(file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/FoldChangeSelectionresult2classDistinctionBenferoni.txt')
+# 8-a name the rows
+rownames(FoldChangeSelectionresult2classDistinctionBenferoni) = FoldChangeSelectionresult2classDistinctionBenferoni[,1]
+FoldChangeSelectionresult2classDistinctionBenferoni = FoldChangeSelectionresult2classDistinctionBenferoni[,-1]
+# 9- sum the rows (exclude the fold change) to find the agreement between gene selection methods
+Allimportance= rowSums(FoldChangeSelectionresult2classDistinctionBenferoni[,2:13])
+# 10- rank genes (based on majority voting) 
+rank =order(Allimportance, decreasing = TRUE)
+# 11- housekeeping for visualization 
+temp = dataScaled3ab
+rownames(temp)=NULL
+colnames(temp)=NULL
+# 12- Visualize
+library(RColorBrewer)
+png(filename = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/code/step5Images/classification.png')
+col <- colorRampPalette(brewer.pal(10,"RdYlBu"))(256)
+print(heatmap(temp[, rank[1:32]], scale = "none", col = col,
+              labRow = '', labCol = '',
+              xlab = 'genes', ylab = 'patients',
+              RowSideColors = rep(c("red", "grey"), ftable(labelTAC3)) ))
+dev.off()
+rownames(temp) = labelTAC3
+library("d3heatmap")
+d3heatmap(temp,k_row = 2, k_col = 7)
+
+for(i in seq(10,508, 10)) 
+{
+  print(heatmap(temp[, rank[1:i]], scale = "none", col = col,
+                labRow = '', labCol = '',
+                xlab = 'genes', ylab = 'patients',
+                RowSideColors = rep(c("red", "grey"), ftable(labelTAC3)) ))
+  readline(prompt="Press [enter] to continue")
+}
+
+for(i in seq(10,508, 10)) 
+{
+  a = cor(t(dataScaled[,1:i]), method = "kendall")
+  print(heatmap(a, scale = "none", col = col,
+                labRow = '', labCol = '',
+                xlab = 'genes', ylab = 'patients',
+                RowSideColors = rep(c("red", "grey"), ftable(labelTAC3)) ))
+  readline(prompt="Press [enter] to continue")
+}
+
+
+```
+
+
+

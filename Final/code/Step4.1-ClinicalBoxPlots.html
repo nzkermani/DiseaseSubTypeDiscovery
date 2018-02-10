@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fjquery%2D1%2E11%2E3%2Fjquery%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fcss%2Fbootstrap%2Emin%2Ecss%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A" rel="stylesheet" />
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fjs%2Fbootstrap%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fshim%2Fhtml5shiv%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fbootstrap%2D3%2E3%2E5%2Fshim%2Frespond%2Emin%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fnavigation%2D1%2E1%2Ftabsets%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+<link href="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fhighlightjs%2Fdefault%2Ecss%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A" rel="stylesheet" />
+<script src="data:text/html; charset=iso-8859-1,%3C%21DOCTYPE%20HTML%20PUBLIC%20%22%2D%2F%2FIETF%2F%2FDTD%20HTML%202%2E0%2F%2FEN%22%3E%0A%3Chtml%3E%3Chead%3E%0A%3Ctitle%3E404%20Not%20Found%3C%2Ftitle%3E%0A%3C%2Fhead%3E%3Cbody%3E%0A%3Ch1%3ENot%20Found%3C%2Fh1%3E%0A%3Cp%3EThe%20requested%20URL%20%2Fnz1413%2FR%2Fwin%2Dlibrary%2F3%2E4%2Frmarkdown%2Frmd%2Fh%2Fhighlightjs%2Fhighlight%2Ejs%20was%20not%20found%20on%20this%20server%2E%3C%2Fp%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E%0A"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type="text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<hr />
+<p>title: “finalBoxplots” author: “Nazanin Zounemat Kermani” date: “January 27, 2018” output: html_document — #Read the data and interpolate</p>
+<pre class="r"><code>clinical &lt;- read.table(&quot;C:/Users/nz1413/Desktop/dataTAC/clinical_620Modified.csv&quot;,  header = TRUE, sep = &quot;,&quot;)
+data &lt;- t(read.table(&quot;C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt&quot;,  header = TRUE))
+dataScaled = scale(data)
+
+TAClabels &lt;- t(read.table(&quot;C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt&quot;,  header = FALSE))
+inds = match(TAClabels[2,], rownames(data))
+tacLabels &lt;- as.numeric(TAClabels[1,])
+dataScaled = dataScaled[inds,]
+
+library(mclust)</code></pre>
+<pre><code>## Package 'mclust' version 5.4
+## Type 'citation(&quot;mclust&quot;)' for citing this R package in publications.</code></pre>
+<pre class="r"><code>mbc&lt;-Mclust(dataScaled)
+summary(mbc)</code></pre>
+<pre><code>## ----------------------------------------------------
+## Gaussian finite mixture model fitted by EM algorithm 
+## ----------------------------------------------------
+## 
+## Mclust VII (spherical, varying volume) model with 4 components:
+## 
+##  log.likelihood   n   df       BIC       ICL
+##       -63604.42 104 2039 -136678.7 -136678.8
+## 
+## Clustering table:
+##  1  2  3  4 
+## 23 28 24 29</code></pre>
+<pre class="r"><code>temp  = factor(mbc$classification)
+levels(temp)=c(&quot;TAC1&quot;, &quot;TAC3a&quot;, &quot;TAC2&quot;, &quot;TAC3b&quot;)
+mbc$classification = temp
+
+# find the clinical vatiable for data
+temp = match(rownames(dataScaled) , as.character(clinical$Patient))
+clinicalData = clinical[temp,]
+# Data imputation
+clinicalData$gp = mbc$classification
+indout = rep(1,dim(clinicalData)[2])
+for(i in 4:dim(clinicalData)[2])
+{
+  if(is.numeric(clinicalData[,i]))
+  {
+    if(length(which(is.na(clinicalData[,i])))/length(clinicalData$gp) &lt; 0.2)
+      indout[i]=0
+    
+  }
+}
+
+forPlot = clinicalData[,which(indout==0)]
+library(missForest)</code></pre>
+<pre><code>## Loading required package: randomForest</code></pre>
+<pre><code>## randomForest 4.6-12</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## Loading required package: foreach</code></pre>
+<pre><code>## Loading required package: itertools</code></pre>
+<pre><code>## Loading required package: iterators</code></pre>
+<pre class="r"><code>forplot.imp = missForest(forPlot, maxiter = 100, ntree = 10000, verbose = TRUE )</code></pre>
+<pre><code>##   missForest iteration 1 in progress...done!
+##     estimated error(s): 0.9613265 
+##     difference(s): 0.00168375 
+##     time: 18.78 seconds
+## 
+##   missForest iteration 2 in progress...done!
+##     estimated error(s): 0.9638778 
+##     difference(s): 5.287977e-05 
+##     time: 18.47 seconds
+## 
+##   missForest iteration 3 in progress...done!
+##     estimated error(s): 0.9624006 
+##     difference(s): 6.380255e-06 
+##     time: 18.54 seconds
+## 
+##   missForest iteration 4 in progress...done!
+##     estimated error(s): 0.9607233 
+##     difference(s): 3.598373e-05 
+##     time: 18.23 seconds</code></pre>
+<pre class="r"><code>imputatedClinicalData = forplot.imp$ximp
+require(reshape2)</code></pre>
+<pre><code>## Loading required package: reshape2</code></pre>
+<pre class="r"><code>Label = mbc$classification
+imputatedClinicalData$Label = factor(Label) </code></pre>
+<div id="tac14" class="section level2">
+<h2>TAC1:4</h2>
+<pre class="r"><code># pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot.pdf')
+png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot.png')
+require(ggplot2)</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre><code>## 
+## Attaching package: 'ggplot2'</code></pre>
+<pre><code>## The following object is masked from 'package:randomForest':
+## 
+##     margin</code></pre>
+<pre class="r"><code>i=1
+  df.m &lt;- melt(imputatedClinicalData[,c(9,27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot2.png')
+  i=4
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  i=7
+  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot3.png')
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot4.png')
+    i=10
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot5.png')
+    i=13
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot6.png')
+    i=16
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot7.png')
+    i=19
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>    i=22
+    png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot8.png')
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot9.png')
+    i=25
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+1),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+</div>
+<div id="tac12-against-tac3ab" class="section level2">
+<h2>Tac12 against Tac3a,b</h2>
+<p>Tac3a and Tac3b</p>
+<pre class="r"><code>TAC12And3Label = Label
+levels(TAC12And3Label) = c(&quot;TAC12&quot;, &quot;TAC3ab&quot;,&quot;TAC12&quot;,&quot;TAC3ab&quot;)
+imputatedClinicalData$Label = TAC12And3Label 
+
+# pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot2.pdf')
+png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot2.png')
+require(ggplot2)
+i=1
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot3.png')
+  i=4
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot4.png')
+  i=7
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot5.png')
+    i=10
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+    dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot6.png')
+    i=13
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+    dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot7.png')
+    i=16
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+    dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot8.png')
+    i=19
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+    dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot9.png')
+    i=22
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+    dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot10.png')
+    i=25
+  df.m &lt;- melt(imputatedClinicalData[,c(i:(i+1),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<p>Tac3a and Tac3b</p>
+<pre class="r"><code>ind34 = c(which(Label == &quot;TAC3a&quot;), which(Label == &quot;TAC3b&quot;))
+imputatedClinicalData3ab = imputatedClinicalData[ind34,]
+imputatedClinicalData3ab$Label = factor(Label[ind34])
+# 
+# pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot2.pdf')
+png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot2.png')
+require(ggplot2)
+i=1
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot3.png')
+  i=4
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot4.png')
+  i=7
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot5.png')
+    i=10
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot6.png')
+    i=13
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot7.png')
+    i=16
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot8.png')
+    i=19
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot9.png')
+    i=22
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+  dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot10.png')
+    i=25
+  df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+1),27)], id.var = &quot;Label&quot;)
+  p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p &lt;- p + geom_boxplot(aes(fill=Label))
+  p &lt;- p + geom_jitter()
+  p &lt;- p + facet_wrap( ~ variable, scales=&quot;free&quot;)
+  # p &lt;- p + xlab(&quot;x-axis&quot;) + ylab(&quot;y-axis&quot;) + ggtitle(&quot;Title&quot;)
+  p &lt;- p + guides(fill=guide_legend(title=&quot;Legend_Title&quot;))
+  p 
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

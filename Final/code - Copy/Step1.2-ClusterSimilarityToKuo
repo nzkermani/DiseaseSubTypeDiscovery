@@ -1,0 +1,19 @@
+---
+title: "ClusterSimilarityToKuo"
+author: "Nazanin Zounemat Kermani"
+date: "February 7, 2018"
+output: html_document
+---
+
+```{r}
+data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+dataScaled = scale(data)
+
+
+library(mclust)
+mc<-Mclust(dataScaled)
+temp <- read.table("C:/Users/nz1413/Desktop/dataTAC/p4Tac2.txt",  header = TRUE)
+
+```
+
+
