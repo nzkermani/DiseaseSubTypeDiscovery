@@ -125,8 +125,13 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>data &lt;- t(read.table(&quot;C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt&quot;,  header = TRUE))
-TAClabels &lt;- t(read.table(&quot;C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt&quot;,  header = FALSE))
+<pre class="r"><code>pathTodata = &quot;C:/Users/nz1413/Desktop/&quot;
+PathToReport = &quot;C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/&quot;
+pathTocode = &quot;C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/code/&quot;
+  
+data &lt;- t(read.table(paste(pathTodata, &quot;/dataTAC/sputum_508genes.txt&quot;, sep = &quot;&quot;),  header = TRUE))
+
+TAClabels &lt;- t(read.table(paste(pathTodata,&quot;/dataTAC/correspondanceTAC.txt&quot;,sep=&quot;&quot;),  header = FALSE))
 inds = match(TAClabels[2,], rownames(data))
 
 dataScaled = scale(data[inds,])
@@ -137,7 +142,6 @@ library(mclust)</code></pre>
 ## Type 'citation(&quot;mclust&quot;)' for citing this R package in publications.</code></pre>
 <pre class="r"><code>mbc&lt;-Mclust(dataScaled)
 
-
 tacLabels &lt;- as.numeric(TAClabels[1,])
 
 myLabele &lt;-mbc$classification
@@ -146,7 +150,7 @@ myLabele[which(myLabele==2) ]&lt;-3
 myLabele[which(myLabele==4) ]&lt;-3
 myLabele[which(myLabele==5)]&lt;-2
 
-source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/codeFromPaul/partition-similarityFunctions.R')
+source(paste(pathTocode, 'codeFromPaul/partition-similarityFunctions.R',sep=&quot;&quot;))
 ftable(tacLabels,myLabele)</code></pre>
 <pre><code>##           myLabele  1  2  3
 ## tacLabels                  
@@ -169,7 +173,7 @@ ftable(tacLabels,myLabele)</code></pre>
 ##         1 
 ## 0.7564263</code></pre>
 <pre class="r"><code>temp = data.frame(list(rownames(data), tacLabels, mbc$classification))
-  write.table(temp, file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/clsterAgreement.txt')</code></pre>
+  write.table(temp, file = paste(PathToReport, 'clsterAgreement.txt',sep=&quot;&quot;))</code></pre>
 
 
 

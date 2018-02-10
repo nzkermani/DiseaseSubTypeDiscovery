@@ -22,10 +22,14 @@ PVALUEFORFEATURES<-function(varselectionActual, matrixPermutated)
 }
 
 
-data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+pathTodata = "C:/Users/nz1413/Desktop/"
+PathToReport = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/"
+  
+data <- t(read.table(paste(pathTodata, "/dataTAC/sputum_508genes.txt", sep = ""),  header = TRUE))
 dataScaled = scale(data)
 
-TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+TAClabels <- t(read.table(paste(pathTodata,"dataTAC/correspondanceTAC.txt",sep=""),  header = FALSE))
+
 inds = match(TAClabels[2,], rownames(data))
 tacLabels <- as.numeric(TAClabels[1,])
 dataScaled = dataScaled[inds,]
@@ -88,18 +92,20 @@ colnames(FinalResult)=c("t.test","pvalue", "welch.test", "pvalue","wilcox.test",
                         "elasticnet", "pvalue","boosting","pvalue", 
                         "golub", "pvalue","shrinkcat","pvalue")
 
-write.csv(file = 'C:/Users/nz1413/Desktop/AnalysisTag/code/result2classDistinction.txt'
-          , FinalResult)
+write.csv(file = paste(PathToReport,"featureSelection/result2classDistinction.txt",sep=""), FinalResult)
+
+
 
 library(FSA)
 for(i in seq(2,26,2))
 {
   indeces = order(FinalResult[,i])
   FinalResult[indeces,i] = p.adjust(FinalResult[indeces,i], 
-                             method = "bonferroni")
+                             method = "BH")
 }
-write.csv(file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/result2classDistinctionBenferoni.txt'
-          , FinalResult)
+
+
+write.csv(file = paste(PathToReport,"featureSelection/result2classDistinctionBenferoni.txt",sep=""), FinalResult)
 
 
 # select important ones quantile
@@ -110,17 +116,17 @@ rownames(FinalSelection) = aLLmethods
 for(i in seq(1,26,2))
 { 
   
-  quantTemp = quantile(FinalResult[,i], 0.95)
-  FinalSelection[(floor(i/2)+1),] = as.numeric(c(FinalResult[,i]>= quantTemp & FinalResult[,(i+1)]<= 0.01))
+  quantTemp = quantile(FinalResult[,i], 0.9)
+  FinalSelection[(floor(i/2)+1),] = as.numeric(c(FinalResult[,i]>= quantTemp & FinalResult[,(i+1)]<= 0.05))
 }
 library(gtools)
 foldChange = 1:nvars
 for (i in 1:nvars)
 {
-  foldChange[i] = foldchange(dataTAC3[which(labelTAC3==3),i],
-                             dataTAC3[which(labelTAC3==4),i] )
+  foldChange[i] = foldchange(dataTAC3[which(labelTAC3=='TAC3a'),i],
+                             dataTAC3[which(labelTAC3=='TAC3b'),i] )
 }
 finalResultSelectionAndFoldChange = cbind(t(FinalSelection), foldChange)
-write.csv(file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/FoldChangeSelectionresult2classDistinctionBenferoni.txt'
+write.csv(file = paste(PathToReport,"featureSelection/FoldChangeSelectionresult2classDistinctionBenferoni.txt",sep="")
           , finalResultSelectionAndFoldChange)
 ```

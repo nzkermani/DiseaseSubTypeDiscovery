@@ -1,0 +1,92 @@
+---
+
+title: "finalBoxplots"
+author: "Nazanin Zounemat Kermani"
+date: "January 27, 2018"
+output: html_document
+---
+#Read the data and interpolate
+```{r}
+
+pathTodata = "C:/Users/nz1413/Desktop/"
+PathToReport = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/"
+  
+# 1- read gene expression data
+data <- t(read.table(paste(pathTodata, "/dataTAC/sputum_508genes.txt", sep = ""),  header = TRUE))
+# 2- scale gene expression data(zere mean, one variance)
+dataScaled = scale(data)
+
+# 3- read Kuo labels
+TAClabels <- t(read.table(paste(pathTodata,"dataTAC/correspondanceTAC.txt",sep=""),  header = FALSE))
+
+clinical <- read.table(paste(pathTodata, "dataTAC/clinical_620Modified.csv", sep=""),  header = TRUE, sep = ",")
+
+inds = match(TAClabels[2,], rownames(data))
+tacLabels <- as.numeric(TAClabels[1,])
+dataScaled = dataScaled[inds,]
+
+library(mclust)
+mbc<-Mclust(dataScaled)
+summary(mbc)
+temp  = factor(mbc$classification)
+levels(temp)=c("TAC1", "TAC3a", "TAC2", "TAC3b")
+mbc$classification = temp
+
+# find the clinical vatiable for data
+temp = match(rownames(dataScaled) , as.character(clinical$Patient))
+clinicalData = clinical[temp,]
+# Data imputation
+clinicalData$gp = mbc$classification
+indout = rep(1,dim(clinicalData)[2])
+for(i in 4:dim(clinicalData)[2])
+{
+  if(is.numeric(clinicalData[,i]))
+  {
+    if(length(which(is.na(clinicalData[,i])))/length(clinicalData$gp) < 0.2)
+      indout[i]=0
+    
+  }
+}
+
+forPlot = clinicalData[,which(indout==0)]
+library(missForest)
+forplot.imp = missForest(forPlot, maxiter = 100, ntree = 10000, verbose = TRUE )
+imputatedClinicalData = forplot.imp$ximp
+require(reshape2)
+
+
+Label = mbc$classification
+imputatedClinicalData$Label = factor(Label) 
+
+
+```
+##  TAC1:4
+```{r}
+source('C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/code/functions/boxplotandpvalue.R')
+for(i in 1:(dim(imputatedClinicalData)[2]-1))
+boxplotandpvalue(imputatedClinicalData[,c(i,27)], paste( PathToReport, 'boxplotsStep42/1234/',sep='')) 
+
+
+```
+
+##  Tac12 against Tac3a,b
+
+
+```{r}
+TAC12And3Label = Label
+levels(TAC12And3Label) = c("TAC12", "TAC3ab","TAC12","TAC3ab")
+imputatedClinicalData$Label = TAC12And3Label 
+for(i in 1:(dim(imputatedClinicalData)[2]-1))
+boxplotandpvalue(imputatedClinicalData[,c(i,27)], paste( PathToReport, 'boxplotsStep42/12-34/',sep='')) 
+
+```
+
+Tac3a and Tac3b
+```{r}
+ind34 = c(which(Label == "TAC3a"), which(Label == "TAC3b"))
+imputatedClinicalData3ab = imputatedClinicalData[ind34,]
+imputatedClinicalData3ab$Label = droplevels(as.factor(Label[ind34]))
+for(i in 1:dim(imputatedClinicalData)[2])
+boxplotandpvalue(imputatedClinicalData3ab[,c(i,27)], paste( PathToReport, 'boxplotsStep42/34/',sep='')) 
+
+```

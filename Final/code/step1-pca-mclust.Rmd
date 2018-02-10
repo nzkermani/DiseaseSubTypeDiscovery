@@ -9,10 +9,6 @@ output:
   word_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ## Find the optimal number of clusters
 
 This the R notebook to find the optimal number of clusters in the data set.
@@ -37,7 +33,9 @@ dataSafety<-function(data)
 ```
 
 ```{r}
-data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",                        header = TRUE))
+pathTodata = "C:/Users/nz1413/Desktop/"
+PathToReport = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/"
+data <- t(read.table(paste(pathTodata, "/dataTAC/sputum_508genes.txt", sep = ""),  header = TRUE))
 dataSafety(data)
 dataScaled = scale(data)
 dataSafety(dataScaled)
@@ -46,7 +44,8 @@ dataSafety(dataScaled)
 Plot the data before any furthur analysis to inspect the clustering tendency. 
 
 ```{r, warning=FALSE}
-TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+TAClabels <- t(read.table(paste(pathTodata,"/dataTAC/correspondanceTAC.txt",sep=""),  header = FALSE))
+
 inds = match(TAClabels[2,], rownames(data))
 tacLabels <- as.numeric(TAClabels[1,])
 dataScaled = dataScaled[inds,]
@@ -69,7 +68,7 @@ mbc<-Mclust(dataScaled)
 summary(mbc)
 ```
 ## visualization 
- high uncertainity A_449, A_207
+high uncertainity A_449, A_207
 ```{r}
 library(factoextra)
 # BIC value for choosing the number of clusters 
@@ -78,7 +77,7 @@ temp  = factor(mbc$classification)
 levels(temp)=c("TAC1", "TAC3a", "TAC2", "TAC3b")
 mbc$classification = temp
 
-write.table(file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/labelsGM.txt', mbc$classification)
+write.table(file = paste(PathToReport, 'labelsGM.txt',sep=""), mbc$classification)
 
 
 fviz_mclust(mbc, "BIC", pallette = "jco")
@@ -86,23 +85,23 @@ fviz_mclust(mbc, "BIC", pallette = "jco")
 #Classification plot
 
 print(fviz_mclust(mbc, "classification", geom="point", 
-            pointsize= 3.5, palette = "jco"))
+                  pointsize= 3.5, palette = "jco"))
 
 #classification uncertainity
 fviz_mclust(mbc, "uncertainty", 
             palette = "jco")
 
 
-png(filename = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/code/step1Images/BIC.png')
+png(filename = paste(PathToReport, '/step1Images/BIC.png',sep=""))
 fviz_mclust(mbc, "BIC", pallette = "jco")
 dev.off()
 #Classification plot
-png(filename = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/code/step1Images/classification.png')
+png(filename = paste(PathToReport, '/step1Images/classification.png.png',sep=""))
 print(fviz_mclust(mbc, "classification", geom="point", 
-            pointsize= 3.5, palette = "jco"))
+                  pointsize= 3.5, palette = "jco"))
 dev.off()
 #classification uncertainity
-png(filename = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/code/step1Images/uncertainity.png')
+png(filename =  paste(PathToReport, '/step1Images/uncertainity.png',sep=""))
 mbc$uncertainty = mbc$uncertainty*1000000
 fviz_mclust(mbc, "uncertainty", 
             palette = "jco")

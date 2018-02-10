@@ -3,8 +3,8 @@ title: "features"
 author: "Nazanin Zounemat Kermani"
 date: "January 25, 2018"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
   word_document: default
 ---
 
@@ -17,7 +17,10 @@ The features are going to be selected based on different models. To find the sig
 
 
 ```{r}
-data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",                        header = TRUE))
+pathTodata = "C:/Users/nz1413/Desktop/"
+PathToReport = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/"
+  
+data <- t(read.table(paste(pathTodata, "/dataTAC/sputum_508genes.txt", sep = ""),  header = TRUE))
 dataScaled = scale(data)
 ```
 
@@ -25,7 +28,7 @@ dataScaled = scale(data)
 
 
 ```{r}
-TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+TAClabels <- t(read.table(paste(pathTodata,"dataTAC/correspondanceTAC.txt",sep=""),  header = FALSE))
 inds = match(TAClabels[2,], rownames(data))
 tacLabels <- as.numeric(TAClabels[1,])
 dataScaled = dataScaled[inds,]
@@ -120,16 +123,16 @@ rfPvalue = t(pValuerf)/1000
 # adjustment
 indeces = order(ftestPvalue)
 ftestPvalue[indeces] = p.adjust(ftestPvalue[indeces], 
-                                  method = "bonferroni")
+                                  method = "BH")
 indeces = order(kruskalPvalue)
 kruskalPvalue[indeces] = p.adjust(kruskalPvalue[indeces], 
-                                  method = "bonferroni")
+                                  method = "BH")
 indeces = order(boostingPvalue)
 boostingPvalue[indeces] = p.adjust(boostingPvalue[indeces], 
-                                  method = "bonferroni")
+                                  method = "BH")
 indeces = order(rfPvalue)
 rfPvalue[indeces] = p.adjust(rfPvalue[indeces], 
-                                  method = "bonferroni")
+                                  method = "BH")
 
 result = cbind(varsel_ftest@importance[[1]][varsel_ftest@rankings[[1]][1:nvars]],
                ftestPvalue, 
@@ -145,7 +148,7 @@ library(gtools)
 foldChange = 1:nvars
 for (i in 1:nvars)
 {
-  foldChange[i] = foldchange(mean(dataScaled[which(mbc$classification==1 | mbc$classification==2),i]), mean(dataScaled[which(mbc$classification==4 | mbc$classification==3),i]) )
+  foldChange[i] = foldchange(mean(dataScaled[which(mbc$classification=='TAC1' | mbc$classification=='TAC2'),i]), mean(dataScaled[which(mbc$classification=='TAC3a' | mbc$classification=='TAC3b'),i]) )
 }
 
 FinalSelection = matrix(0,nvars,4 )
@@ -154,8 +157,8 @@ rownames(FinalSelection) = colnames(dataScaled)
 for(i in seq(1,8,2))
 { 
   
-  quantTemp = quantile(result[,i], 0.95)
-  FinalSelection[,(floor(i/2)+1)] = as.numeric(c(result[,i]>= quantTemp & result[,(i+1)]<= 0.01))
+  quantTemp = quantile(result[,i], 0.9)
+  FinalSelection[,(floor(i/2)+1)] = as.numeric(c(result[,i]>= quantTemp & result[,(i+1)]<= 0.05))
 }
 
 FinalSelection = cbind(FinalSelection, foldChange)
@@ -164,9 +167,9 @@ rownames(FinalSelection) = colnames(dataScaled)
 result = cbind(result, foldChange)
 rownames(result) = colnames(dataScaled)
 
-write.table(result, file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/featuresFor4Classes.txt' )
-
-write.table(FinalSelection, file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/DesicionfeaturesFor4Classes.txt' )
-
+write.table(result, file = paste(PathToReport,"featureSelection/featuresFor4Classes.txt",sep="") )
+print(result)
+write.table(FinalSelection, file = paste(PathToReport, "/DesicionfeaturesFor4Classes.txt" ,sep="") )
+print(FinalSelection)
 
 ```

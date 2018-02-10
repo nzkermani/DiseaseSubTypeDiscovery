@@ -6,8 +6,13 @@ output: html_document
 ---
 
 ```{r}
-data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
-TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+pathTodata = "C:/Users/nz1413/Desktop/"
+PathToReport = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/"
+pathTocode = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/code/"
+  
+data <- t(read.table(paste(pathTodata, "/dataTAC/sputum_508genes.txt", sep = ""),  header = TRUE))
+
+TAClabels <- t(read.table(paste(pathTodata,"/dataTAC/correspondanceTAC.txt",sep=""),  header = FALSE))
 inds = match(TAClabels[2,], rownames(data))
 
 dataScaled = scale(data[inds,])
@@ -16,8 +21,6 @@ dataScaled = scale(data[inds,])
 library(mclust)
 mbc<-Mclust(dataScaled)
 
-TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
-inds = match(TAClabels[2,], rownames(data))
 tacLabels <- as.numeric(TAClabels[1,])
 
 myLabele <-mbc$classification
@@ -26,13 +29,13 @@ myLabele[which(myLabele==2) ]<-3
 myLabele[which(myLabele==4) ]<-3
 myLabele[which(myLabele==5)]<-2
 
-source('C:/Users/nz1413/Desktop/AnalysisTag/Final/code/codeFromPaul/partition-similarityFunctions.R')
+source(paste(pathTocode, 'codeFromPaul/partition-similarityFunctions.R',sep=""))
 ftable(tacLabels,myLabele)
 mutual_information(tacLabels,myLabele) 
 homogeneity_completeness_vmeasure(tacLabels,myLabele) 
 
 temp = data.frame(list(rownames(data), tacLabels, mbc$classification))
-  write.table(temp, file = 'C:/Users/nz1413/Desktop/AnalysisTag/Final/data/clsterAgreement.txt')
+  write.table(temp, file = paste(PathToReport, 'clsterAgreement.txt',sep=""))
  
 ```
 

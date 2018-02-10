@@ -7,11 +7,20 @@ output: html_document
 ---
 #Read the data and interpolate
 ```{r}
-clinical <- read.table("C:/Users/nz1413/Desktop/dataTAC/clinical_620Modified.csv",  header = TRUE, sep = ",")
-data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+
+pathTodata = "C:/Users/nz1413/Desktop/"
+PathToReport = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/"
+  
+# 1- read gene expression data
+data <- t(read.table(paste(pathTodata, "/dataTAC/sputum_508genes.txt", sep = ""),  header = TRUE))
+# 2- scale gene expression data(zere mean, one variance)
 dataScaled = scale(data)
 
-TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+# 3- read Kuo labels
+TAClabels <- t(read.table(paste(pathTodata,"dataTAC/correspondanceTAC.txt",sep=""),  header = FALSE))
+
+clinical <- read.table(paste(pathTodata, "dataTAC/clinical_620Modified.csv", sep=""),  header = TRUE, sep = ",")
+
 inds = match(TAClabels[2,], rownames(data))
 tacLabels <- as.numeric(TAClabels[1,])
 dataScaled = dataScaled[inds,]
@@ -57,10 +66,15 @@ imputatedClinicalData$Label = factor(Label)
 
 
 # pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot.pdf')
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot1.png',sep=''))
 require(ggplot2)
 i=1
-  df.m <- melt(imputatedClinicalData[,c(9,27)], id.var = "Label")
+for(i in 1:dim(imputatedClinicalData)[2])
+
+  {
+  png(paste(PathToReport, 'boxplots/TAC123ab ', colnames(imputatedClinicalData)[i],  '.png' ,sep=''))
+  
+  df.m <- melt(imputatedClinicalData[,c(i,27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
   p <- p + geom_boxplot(aes(fill=Label))
   p <- p + geom_jitter()
@@ -69,7 +83,9 @@ i=1
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
 dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot2.png')
+}
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot2.png',sep=''))
+
   i=4
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -81,7 +97,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBox
   p
   dev.off()
   i=7
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot3.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot3.png',sep=''))
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
   p <- p + geom_boxplot(aes(fill=Label))
@@ -91,7 +107,10 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBox
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot4.png')
+  
+  png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot4.png',sep=''))
+  
+
     i=10
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -102,7 +121,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBox
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot5.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot5.png',sep=''))
     i=13
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -113,7 +132,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBox
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot6.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot6.png',sep=''))
     i=16
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -124,7 +143,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBox
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot7.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot7.png',sep=''))
     i=19
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -136,7 +155,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBox
   p 
   dev.off()
     i=22
-    png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot8.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot8.png',sep=''))
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
   p <- p + geom_boxplot(aes(fill=Label))
@@ -146,7 +165,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBox
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot9.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot9.png',sep=''))
     i=25
   df.m <- melt(imputatedClinicalData[,c(i:(i+1),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -163,14 +182,29 @@ dev.off()
 ##  Tac12 against Tac3a,b
 
 
-Tac3a and Tac3b
 ```{r}
 TAC12And3Label = Label
 levels(TAC12And3Label) = c("TAC12", "TAC3ab","TAC12","TAC3ab")
 imputatedClinicalData$Label = TAC12And3Label 
+i=1
+for(i in 1:dim(imputatedClinicalData)[2])
+
+  {
+ png(paste(PathToReport, 'boxplots/TAC12AGAINT3ab ', colnames(imputatedClinicalData)[i],  '.png' ,sep=''))
+  
+  df.m <- melt(imputatedClinicalData[,c(i,27)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+dev.off()
+}
 
 # pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot2.pdf')
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot2.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot1.png',sep=''))
 require(ggplot2)
 i=1
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
@@ -182,7 +216,7 @@ i=1
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
 dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot3.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot2.png',sep=''))
   i=4
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -193,7 +227,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariabl
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p
   dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot4.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot2.png',sep=''))
   i=7
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -204,7 +238,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariabl
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot5.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot3.png',sep=''))
     i=10
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -215,7 +249,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariabl
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
     dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot6.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot4.png',sep=''))
     i=13
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -226,7 +260,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariabl
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
     dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot7.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot1.png',sep=''))
     i=16
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -237,7 +271,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariabl
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
     dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot8.png')
+    png(paste(PathToReport, 'boxplots/TAC12Against3ClinicalVariablesBoxPlot8.png',sep=''))
     i=19
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -248,8 +282,9 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariabl
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
     dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot9.png')
-    i=22
+
+    png(paste(PathToReport, 'boxplots/TAC12Against3ClinicalVariablesBoxPlot9.png',sep=''))
+      i=22
   df.m <- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
   p <- p + geom_boxplot(aes(fill=Label))
@@ -259,8 +294,9 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariabl
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
     dev.off()
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot10.png')
-    i=25
+
+    png(paste(PathToReport, 'boxplots/TAC12Against3ClinicalVariablesBoxPlot10.png',sep=''))
+      i=25
   df.m <- melt(imputatedClinicalData[,c(i:(i+1),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
   p <- p + geom_boxplot(aes(fill=Label))
@@ -279,10 +315,25 @@ Tac3a and Tac3b
 
 ind34 = c(which(Label == "TAC3a"), which(Label == "TAC3b"))
 imputatedClinicalData3ab = imputatedClinicalData[ind34,]
-imputatedClinicalData3ab$Label = factor(Label[ind34])
+imputatedClinicalData3ab$Label = droplevels(as.factor(Label[ind34]))
+for(i in 1:dim(imputatedClinicalData)[2])
+
+  {
+ png(paste(PathToReport, 'boxplots/TAC3aAGAINT3b ', colnames(imputatedClinicalData)[i],  '.png' ,sep=''))
+  
+  df.m <- melt(imputatedClinicalData3ab[,c(i,27)], id.var = "Label")
+  p <- ggplot(data = df.m, aes(x=variable, y=value)) 
+  p <- p + geom_boxplot(aes(fill=Label))
+  p <- p + geom_jitter()
+  p <- p + facet_wrap( ~ variable, scales="free")
+  # p <- p + xlab("x-axis") + ylab("y-axis") + ggtitle("Title")
+  p <- p + guides(fill=guide_legend(title="Legend_Title"))
+  p 
+dev.off()
+}
 # 
 # pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot2.pdf')
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot2.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot0.png',sep=''))
 require(ggplot2)
 i=1
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = "Label")
@@ -294,7 +345,7 @@ i=1
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
 dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot3.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot2.png',sep=''))
   i=4
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -305,7 +356,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBo
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p
   dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot4.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot3.png',sep=''))
   i=7
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -316,7 +367,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBo
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot5.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot4.png',sep=''))
     i=10
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -327,7 +378,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBo
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot6.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot5.png',sep=''))
     i=13
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -338,7 +389,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBo
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot7.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot6.png',sep=''))
     i=16
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -349,7 +400,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBo
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot8.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot7.png',sep=''))
     i=19
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -360,7 +411,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBo
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot9.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot8.png',sep=''))
     i=22
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -371,7 +422,7 @@ png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBo
   p <- p + guides(fill=guide_legend(title="Legend_Title"))
   p 
   dev.off()
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot10.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot9.png',sep=''))
     i=25
   df.m <- melt(imputatedClinicalData3ab[,c(i:(i+1),27)], id.var = "Label")
   p <- ggplot(data = df.m, aes(x=variable, y=value)) 

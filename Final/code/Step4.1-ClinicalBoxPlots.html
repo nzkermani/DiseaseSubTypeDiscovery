@@ -123,11 +123,19 @@ $(document).ready(function () {
 
 <hr />
 <p>title: “finalBoxplots” author: “Nazanin Zounemat Kermani” date: “January 27, 2018” output: html_document — #Read the data and interpolate</p>
-<pre class="r"><code>clinical &lt;- read.table(&quot;C:/Users/nz1413/Desktop/dataTAC/clinical_620Modified.csv&quot;,  header = TRUE, sep = &quot;,&quot;)
-data &lt;- t(read.table(&quot;C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt&quot;,  header = TRUE))
+<pre class="r"><code>pathTodata = &quot;C:/Users/nz1413/Desktop/&quot;
+PathToReport = &quot;C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/&quot;
+  
+# 1- read gene expression data
+data &lt;- t(read.table(paste(pathTodata, &quot;/dataTAC/sputum_508genes.txt&quot;, sep = &quot;&quot;),  header = TRUE))
+# 2- scale gene expression data(zere mean, one variance)
 dataScaled = scale(data)
 
-TAClabels &lt;- t(read.table(&quot;C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt&quot;,  header = FALSE))
+# 3- read Kuo labels
+TAClabels &lt;- t(read.table(paste(pathTodata,&quot;dataTAC/correspondanceTAC.txt&quot;,sep=&quot;&quot;),  header = FALSE))
+
+clinical &lt;- read.table(paste(pathTodata, &quot;dataTAC/clinical_620Modified.csv&quot;, sep=&quot;&quot;),  header = TRUE, sep = &quot;,&quot;)
+
 inds = match(TAClabels[2,], rownames(data))
 tacLabels &lt;- as.numeric(TAClabels[1,])
 dataScaled = dataScaled[inds,]
@@ -179,24 +187,19 @@ library(missForest)</code></pre>
 <pre><code>## Loading required package: iterators</code></pre>
 <pre class="r"><code>forplot.imp = missForest(forPlot, maxiter = 100, ntree = 10000, verbose = TRUE )</code></pre>
 <pre><code>##   missForest iteration 1 in progress...done!
-##     estimated error(s): 0.9613265 
-##     difference(s): 0.00168375 
-##     time: 18.78 seconds
+##     estimated error(s): 0.961205 
+##     difference(s): 0.002006628 
+##     time: 17.77 seconds
 ## 
 ##   missForest iteration 2 in progress...done!
-##     estimated error(s): 0.9638778 
-##     difference(s): 5.287977e-05 
-##     time: 18.47 seconds
+##     estimated error(s): 0.9621345 
+##     difference(s): 7.528496e-06 
+##     time: 17.44 seconds
 ## 
 ##   missForest iteration 3 in progress...done!
-##     estimated error(s): 0.9624006 
-##     difference(s): 6.380255e-06 
-##     time: 18.54 seconds
-## 
-##   missForest iteration 4 in progress...done!
-##     estimated error(s): 0.9607233 
-##     difference(s): 3.598373e-05 
-##     time: 18.23 seconds</code></pre>
+##     estimated error(s): 0.9612592 
+##     difference(s): 2.006668e-05 
+##     time: 17.3 seconds</code></pre>
 <pre class="r"><code>imputatedClinicalData = forplot.imp$ximp
 require(reshape2)</code></pre>
 <pre><code>## Loading required package: reshape2</code></pre>
@@ -205,7 +208,7 @@ imputatedClinicalData$Label = factor(Label) </code></pre>
 <div id="tac14" class="section level2">
 <h2>TAC1:4</h2>
 <pre class="r"><code># pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot.pdf')
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot1.png',sep=''))
 require(ggplot2)</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <pre><code>## 
@@ -225,7 +228,8 @@ require(ggplot2)</code></pre>
 dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot2.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot2.png',sep=''))
+
   i=4
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -239,7 +243,7 @@ dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
 <pre class="r"><code>  i=7
-  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot3.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot3.png',sep=''))
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
   p &lt;- p + geom_boxplot(aes(fill=Label))
@@ -251,7 +255,9 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot4.png')
+<pre class="r"><code>  png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot4.png',sep=''))
+  
+
     i=10
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -264,7 +270,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot5.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot5.png',sep=''))
     i=13
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -277,7 +283,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot6.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot6.png',sep=''))
     i=16
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -290,7 +296,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot7.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot7.png',sep=''))
     i=19
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -304,7 +310,7 @@ dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
 <pre class="r"><code>    i=22
-    png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot8.png')
+png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot8.png',sep=''))
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
   p &lt;- p + geom_boxplot(aes(fill=Label))
@@ -316,7 +322,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC123abClinicalVariablesBoxPlot9.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC123abClinicalVariablesBoxPlot9.png',sep=''))
     i=25
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+1),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -338,7 +344,7 @@ levels(TAC12And3Label) = c(&quot;TAC12&quot;, &quot;TAC3ab&quot;,&quot;TAC12&quo
 imputatedClinicalData$Label = TAC12And3Label 
 
 # pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot2.pdf')
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot2.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot1.png',sep=''))
 require(ggplot2)
 i=1
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
@@ -352,7 +358,7 @@ i=1
 dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot3.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot2.png',sep=''))
   i=4
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -365,7 +371,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot4.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot2.png',sep=''))
   i=7
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -378,7 +384,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot5.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot3.png',sep=''))
     i=10
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -391,7 +397,7 @@ dev.off()</code></pre>
     dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot6.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot4.png',sep=''))
     i=13
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -404,7 +410,7 @@ dev.off()</code></pre>
     dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot7.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot1.png',sep=''))
     i=16
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -417,7 +423,7 @@ dev.off()</code></pre>
     dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot8.png')
+<pre class="r"><code>    png(paste(PathToReport, 'boxplots/TAC12Against3ClinicalVariablesBoxPlot8.png',sep=''))
     i=19
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -430,8 +436,8 @@ dev.off()</code></pre>
     dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot9.png')
-    i=22
+<pre class="r"><code>    png(paste(PathToReport, 'boxplots/TAC12Against3ClinicalVariablesBoxPlot9.png',sep=''))
+      i=22
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
   p &lt;- p + geom_boxplot(aes(fill=Label))
@@ -443,8 +449,8 @@ dev.off()</code></pre>
     dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>  png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC12Against3ClinicalVariablesBoxPlot10.png')
-    i=25
+<pre class="r"><code>    png(paste(PathToReport, 'boxplots/TAC12Against3ClinicalVariablesBoxPlot10.png',sep=''))
+      i=25
   df.m &lt;- melt(imputatedClinicalData[,c(i:(i+1),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
   p &lt;- p + geom_boxplot(aes(fill=Label))
@@ -462,7 +468,7 @@ imputatedClinicalData3ab = imputatedClinicalData[ind34,]
 imputatedClinicalData3ab$Label = factor(Label[ind34])
 # 
 # pdf('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot2.pdf')
-png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot2.png')
+png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot0.png',sep=''))
 require(ggplot2)
 i=1
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
@@ -476,7 +482,7 @@ i=1
 dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot3.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot2.png',sep=''))
   i=4
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -489,7 +495,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot4.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot3.png',sep=''))
   i=7
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -502,7 +508,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot5.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot4.png',sep=''))
     i=10
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -515,7 +521,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot6.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot5.png',sep=''))
     i=13
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -528,7 +534,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot7.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot6.png',sep=''))
     i=16
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -541,7 +547,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot8.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot7.png',sep=''))
     i=19
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -554,7 +560,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot9.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot8.png',sep=''))
     i=22
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+3),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 
@@ -567,7 +573,7 @@ dev.off()</code></pre>
   dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>png('C:/Users/nz1413/Desktop/AnalysisTag/Final/data/TAC3aTACbClinicalVariablesBoxPlot10.png')
+<pre class="r"><code>png(paste(PathToReport, 'boxplots/TAC3abClinicalVariablesBoxPlot9.png',sep=''))
     i=25
   df.m &lt;- melt(imputatedClinicalData3ab[,c(i:(i+1),27)], id.var = &quot;Label&quot;)
   p &lt;- ggplot(data = df.m, aes(x=variable, y=value)) 

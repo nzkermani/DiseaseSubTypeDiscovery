@@ -8,14 +8,17 @@ output:
 ---
 
 ```{r}
-data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",                        header = TRUE))
+pathTodata = "C:/Users/nz1413/Desktop/"
+PathToReport = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/"
+  
+data <- t(read.table(paste(pathTodata, "/dataTAC/sputum_508genes.txt", sep = ""),  header = TRUE))
 dataScaled = scale(data)
 ```
 ```{r}
 library(factoextra)
 Methods= c("silhouette", "wss","gap_stat")
 Clustering.method = c("kmeans", "hcut","pam")
-pdf("C:/Users/nz1413/Desktop/AnalysisTag/Final/data/numberofClusters.pdf")
+pdf(paste(PathToReport , "numberofClusters.pdf", sep=""))
 set.seed(123)
 for(emethod in Methods)
 {

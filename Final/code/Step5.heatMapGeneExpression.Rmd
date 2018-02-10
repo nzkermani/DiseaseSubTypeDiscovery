@@ -5,13 +5,17 @@ date: "January 28, 2018"
 output: html_document
 ---
 ```{r}
+pathTodata = "C:/Users/nz1413/Desktop/"
+PathToReport = "C:/Users/nz1413/Desktop/AnalysisTag/DiseaseSubTypeDiscovery/Final/report/"
+  
 # 1- read gene expression data
-data <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/sputum_508genes.txt",  header = TRUE))
+data <- t(read.table(paste(pathTodata, "/dataTAC/sputum_508genes.txt", sep = ""),  header = TRUE))
 # 2- scale gene expression data(zere mean, one variance)
 dataScaled = scale(data)
 
-# 3- read clinical data
-TAClabels <- t(read.table("C:/Users/nz1413/Desktop/dataTAC/correspondanceTAC.txt",  header = FALSE))
+# 3- read Kuo labels
+TAClabels <- t(read.table(paste(pathTodata,"dataTAC/correspondanceTAC.txt",sep=""),  header = FALSE))
+
 
 # 3-order the patients' gene expression data in the same way as the clincal data
 inds = match(TAClabels[2,], rownames(data))
